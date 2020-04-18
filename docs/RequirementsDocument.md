@@ -1,10 +1,10 @@
 # Requirements Document 
 
-Authors:
+Authors: Enrico Clemente, Luca Francescato, Giovanni Tangredi, Seyedali Mousavi
 
-Date:
+Date: 18/04/2020
 
-Version:
+Version: 1.0
 
 # Contents
 
@@ -12,7 +12,6 @@ Version:
 - [Context Diagram and interfaces](#context-diagram-and-interfaces)
 	+ [Context Diagram](#context-diagram)
 	+ [Interfaces](#interfaces) 
-	
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
 	+ [Functional Requirements](#functional-requirements)
@@ -31,54 +30,68 @@ Version:
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|                   |             | 
+| Registered User   |  Uses the application to add new gas stations, add and update gas station prices, search for gas stations and relative prices on the map | 
+| User | Uses the application to search for gas stations and relative prices on the map |
+| Map Service | Gives the user the location of gas stations with their prices |
 
 # Context Diagram and interfaces
 
 ## Context Diagram
-\<Define here Context diagram using UML use case diagram>
 
-\<actors are a subset of stakeholders>
+
 
 ## Interfaces
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
-|       |  |  |
+| User/Registered User| GUI | TouchScreen, Monitor, Keyboard |
+| Map Service | API | Internet connection |
 
 # Stories and personas
-\<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
 
-\<Persona is-an-instance-of actor>
+Robert travels for work. He is a freelancer, and drives his car at least 4 hours per day. He drives most of the times in highways, where gas prices are quite high and gas stations are very far one from each other. This makes him plan every movement so that he knows where to get gas, without having troubles and paying too much. He would like to have a rapid way of looking for the best gas stations in the route he's going to run across, and also update the prices so that others with similar necessities can get the most out of this application.
 
-\<stories will be formalized later as use cases>
+Alberto is on holiday and he’s noticed that his car is quite out of gas and he uses the app to check if there are any good gas stations nearby. 
+He selects a radius of 1km from his position and gets the results from the app, he then decides to go to the gas station with the lowest prices but also with the best facilities (bar, toilets,...) to have a break with his family.
+
+Alan is a food delivery employee and he uses its scooter for his deliveries. He wants to earn the best he can so he wants to save on fuel cost. 
+So he uses EZGas to find always the cheapest gas station in his area.
+
+Luigi is a gas station owner. He spends too much time on his gas station, but he has a few customers. Since he does not expend much money to introduce his gas station to people around, his earning is low. His gas station was not in the main district of the city and not anybody was aware of existence of this gas station. Joe, one of his friends, introduces the “EZGas” application to him in which he can add his gas station to the list of all gas stations to show on the map for drivers. Also, he was able to insert the prices of fuels and possibly open/close hours. Now, he can count on having more customers in his gas station.
 
 
 # Functional and non functional requirements
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<will match to high level use cases>
-
 | ID        | Description  |
 | ------------- |:-------------:| 
-|  FR1     |  |
-|  FR2     |   |
+| FR1 | Create a new user account |
+| FR2 | Deactivating a user account |
+| FR3 | Update user account information |
+| FR4 | Add a gas station with its fuel types and their prices |
+| FR4.1 |	Add facilities information of a gas station |
+| FR4.2 | Add optional review |
+| FR5 | Update prices of an existing gas station |
+| FR6 | Show on the map service gas stations with their prices |
+| FR6.1 | Filter gas stations on fuel type |
+| FR6.2 | Filter gas stations on price |
+| FR6.3 | Filter gas stations on distance from the user location |
+| FR6.4 | Filter gas stations on the facilities |
+| FR7 | Report bugs and data errors FR1 |  
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
-
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     |   |  | |
-|  NFR2     | |  | |
-|  NFR3     | | | |
+| NFR1 | Usability | Application should be used with no training by any user	 | All FR |
+| NFR2 | Performance |	All functions should complete in < 1 sec | All FR |
+| NFR3	| Portability| The application runs on smartphones (Android, iOS) | All FR |
+| NFR4 | Portability | The application runs on PCs' web browsers(Google Chrome, Safari, Mozilla Firefox) | All FR|
+|NFR5 | Localisation | Decimal numbers use . (dot) as decimal separator | All FR |
+| NFR6 | Usability | Name of the gas stations may be in other languages which demands usage and support of Unicode | All FR|
+| NFR7 | Privacy	| The application doesn't collect any personal information and doesn't bind GPS data to any specific user |
+| NFR8	| Privacy	| The application is GDPR compliant|	
 
 
 # Use case diagram and use cases
