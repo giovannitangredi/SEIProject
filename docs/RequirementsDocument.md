@@ -38,7 +38,8 @@ Version: 1.0
 
 ## Context Diagram
 
-
+<Define here Context diagram using UML use case diagram>
+<actors are a subset of stakeholders>
 
 ## Interfaces
 
