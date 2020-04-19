@@ -129,7 +129,7 @@ u -- (FR1 Create a new user account)
 ru -- (FR2 Deactivating a user account)
 ru -- (FR3 Update user account information)
 ru -- (FR4 Add a gas station with its fuel types, prices and schedule)
-(FR4 Add a gas station with its fuel types, prices and schedule) ..> (FR4.1 Add optional facilities information of a gas station) : include
+(FR4 Add a gas station with its fuel types and their prices) ..> (FR4.1 Add optional facilities information of a gas station) : include
 (FR4 Add a gas station with its fuel types, prices and schedule) ..> (FR4.2 Add optional review) : include
 (FR4 Add a gas station with its fuel types, prices and schedule) ..> (FR4.3 Add optional schedule) : include
 ru -- (FR5 Update prices of an existing gas station)
@@ -295,8 +295,7 @@ ru -- (FR7 Report bugs and data errors)
 | Description | User adds gas station with fuel types and their prices |
 | Precondition | User is a registered user |
 | Post condition | A new gas station is added with information about fuel types and their prices |
-| Nominal Scenario | User selects location on map, taps on 'New gas station', chooses name for gas station,
-adds fuel types for the gas station, adds prices for each new fuel type |
+| Nominal Scenario | User selects location on map, taps on 'New gas station', chooses name for gas station, adds fuel types for the gas station, adds prices for each new fuel type |
 | Variants | User selects location on map, taps on 'New gas station', chooses name for gas station |
 | Step# | Step description |
 | 1 | User opens map section |
@@ -421,9 +420,14 @@ EZGas -- "*" Bug
 ```
 
 # System Design
-\<describe here system design>
 
-\<must be consistent with Context diagram>
+```plantuml
+@startuml
+
+rectangle PersonalDevice{}
+
+@enduml
+```
 
 # Deployment Diagram 
 
