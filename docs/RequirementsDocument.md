@@ -121,26 +121,42 @@ Luigi is a gas station owner. He spends too much time on his gas station, but he
 @startuml
 
 left to right direction
+
 actor User as u
 actor "Registered user" as ru
 actor "Map service" as m
 
-u -- (FR1 Create a new user account)
-ru -- (FR2 Deactivating a user account)
-ru -- (FR3 Update user account information)
-ru -- (FR4 Add a gas station with its fuel types, prices and schedule)
-(FR4 Add a gas station with its fuel types and their prices) ..> (FR4.1 Add optional facilities information of a gas station) : include
-(FR4 Add a gas station with its fuel types, prices and schedule) ..> (FR4.2 Add optional review) : include
-(FR4 Add a gas station with its fuel types, prices and schedule) ..> (FR4.3 Add optional schedule) : include
-ru -- (FR5 Update prices of an existing gas station)
-u -- (FR6 Show on the map service gas stations with their prices)
-ru -- (FR6 Show on the map service gas stations with their prices)
-m -- (FR6 Show on the map service gas stations with their prices)
-(FR6 Show on the map service gas stations with their prices) ..> (FR6.1 Filter gas stations on fuel type) : extend
-(FR6 Show on the map service gas stations with their prices) ..> (FR6.2 Filter gas stations on price) : extend
-(FR6 Show on the map service gas stations with their prices) ..> (FR6.3 Filter gas stations on distance from the user location) : extend
-(FR6 Show on the map service gas stations with their prices) ..> (FR6.4 Filter gas stations on the facilities) : extend
-ru -- (FR7 Report bugs and data errors)
+usecase "FR1 Create a new user account" as FR1
+usecase "FR2 Deactivating a user account" as FR2
+usecase "FR3 Update user account information" as FR3
+usecase "FR4 Add a gas station with its fuel types, prices and schedule" as FR4
+usecase "FR4.1 Add optional facilities information of a gas station" as FR4.1
+usecase "FR4.2 Add optional review" as FR4.2
+usecase "FR4.3 Add optional schedule" as FR4.3
+usecase "FR5 Update prices of an existing gas station" as FR5
+usecase "FR6 Show on the map service gas stations with their prices" as FR6
+usecase "FR6.1 Filter gas stations on fuel type" as FR6.1
+usecase "FR6.2 Filter gas staton on price" as FR6.2
+usecase "FR6.3 Filter gas stations on distance from the user location" as FR6.3 
+usecase "Filter gas stations on the facilities" as FR6.4
+usecase "FR7 Report bugs and data errors"
+
+u -- FR1 
+ru -- FR2
+ru -- FR3
+ru -- FR4 
+FR4 ..> FR4.1 : include
+FR4 ..> FR4.2 : include
+FR4 ..> FR4.3 : include
+ru -- FR5
+u -- FR6 
+ru -- FR6
+m -- FR6 
+FR6 ..> FR6.1 : extend
+FR6 ..> FR6.2 : extend
+FR6 ..> FR6.3 : extend
+FR6 ..> FR6.4 : extend
+ru -- FR7
 
 @enduml
 ```
@@ -295,7 +311,7 @@ ru -- (FR7 Report bugs and data errors)
 | Description | User adds gas station with fuel types and their prices |
 | Precondition | User is a registered user |
 | Post condition | A new gas station is added with information about fuel types and their prices |
-| Nominal Scenario | User selects location on map, taps on 'New gas station', chooses name for gas station, adds fuel types for the gas station, adds prices for each new fuel type |
+| Nominal Scenario | User adds a new gas station with fuel types and their prices |
 | Variants | User selects location on map, taps on 'New gas station', chooses name for gas station |
 | Step# | Step description |
 | 1 | User opens map section |
