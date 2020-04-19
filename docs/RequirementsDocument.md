@@ -87,15 +87,16 @@ Luigi is a gas station owner. He spends too much time on his gas station, but he
 | FR2 | Deactivating a user account |
 | FR3 | Update user account information |
 | FR4 | Add a gas station with its fuel types and their prices |
-| FR4.1 |	Add facilities information of a gas station |
+| FR4.1 |	Add optional facilities information of a gas station |
 | FR4.2 | Add optional review |
+| FR4.3 | Add optional schedules |
 | FR5 | Update prices of an existing gas station |
 | FR6 | Show on the map service gas stations with their prices |
 | FR6.1 | Filter gas stations on fuel type |
 | FR6.2 | Filter gas stations on price |
 | FR6.3 | Filter gas stations on distance from the user location |
 | FR6.4 | Filter gas stations on the facilities |
-| FR7 | Report bugs and data errors FR1 |  
+| FR7 | Report bugs |  
 
 ## Non Functional Requirements
 
@@ -171,30 +172,37 @@ ru -- (FR7 Report bugs and data errors)
 | Post condition | User's account information are updated |
 | Nominal Scenario | User updates account's information |
 
-### Use case 4, UC4 - FR4 Add a gas station with its fuel types, prices and schedule
+### Use case 4, UC4 - FR4 Add a gas station with its fuel types and their prices
 
 | Actors Involved | Registered user, Map service |
 | ------------- |:-------------:|
 | Precondition | User is a registered user |
 | Post condition | Gas station is added with fuel types and prices |
-| Nominal Scenario | User adds a new gas station with fuel types, prices and schedule for each new fuel type |
+| Nominal Scenario | User adds a new gas station with fuel types and their prices |
 | Variants | User adds a new gas station |
 
-### Use case 4.1, UC4.1 - FR4.1 Add facilities information of a gas station
+### Use case 4.1, UC4.1 - FR4.1 Add optional facilities information of a gas station
 
-| Actors Involved | Registered user, Map service |
+| Actors Involved | Registered user |
 | ------------- |:-------------:|
 | Precondition | User is a registered user, gas station exists |
 | Post condition | Gas station is updated with facilites information |
-| Nominal Scenario | User adds facilities information to a gas station |
+| Nominal Scenario | User adds facilities information for the gas station |
 
 ### Use case 4.2, UC4.2 - FR4.2 Add optional review
 
-| Actors Involved | Registered user, Map service |
+| Actors Involved | Registered user |
 | ------------- |:-------------:|
 | Precondition | User is a registered user, gas station exists |
 | Post condition | Gas station is updated with user's review |
 | Nominal Scenario | User writes review for a gas station |
+
+### Use case 4.3, UC4.3 - FR4.3 Add optional schedule
+| Actors Involved | Registered user |
+| ------------- |:-------------:|
+| Precondition | User is a registered user, gas station exists |
+| Post condition | Gas station is updated with its schedule |
+| Nominal Scenario | User schedules for a gas station |
 
 ### Use case 5, UC5 - FR5 Update prices of an existing gas station
 
@@ -209,7 +217,7 @@ ru -- (FR7 Report bugs and data errors)
 
 | Actors Involved | Unregistered user, registered user, Map service |
 | ------------- |:-------------:|
-| Precondition | User must not be registered, at least one gas station exists |
+| Precondition | User doesn't have to be registered, at least one gas station exists |
 | Post condition | Gas stations with prices are shown on the map |
 | Nominal Scenario | User gets geolocalized by GPS system, map show gas stations with prices based on user's current location |
 | Variants | User chooses a location, map shows gas stations with prices based on selected location |
@@ -218,7 +226,7 @@ ru -- (FR7 Report bugs and data errors)
 
 | Actors Involved | Unregistered user, registered user, Map service |
 | ------------- |:-------------:|
-| Precondition | User must not be registered |
+| Precondition | User doesn't have to be registered |
 | Post condition | Map shows (zero or more) gas stations filtered by fuel type |
 | Nominal Scenario | User gets geolocalized by GPS system, adds filter by fuel type, map shows filtered gas stations with prices |
 | Variants | User chooses a location, adds filter by fuel type, map shows filtered gas stations with prices |
@@ -227,7 +235,7 @@ ru -- (FR7 Report bugs and data errors)
 
 | Actors Involved | Unregistered user, registered user, Map service |
 | ------------- |:-------------:|
-| Precondition | User must not be registered |
+| Precondition | User doesn't have to be registered |
 | Post condition | Map shows (zero or more) gas stations filtered by price |
 | Nominal Scenario | User gets geolocalized by GPS system, adds filter by price, map shows filtered gas stations with prices |
 | Variants | User chooses a location, adds filter by price, map shows filtered gas stations with prices |
@@ -236,7 +244,7 @@ ru -- (FR7 Report bugs and data errors)
 
 | Actors Involved | Unregistered user, registered user, Map service |
 | ------------- |:-------------:|
-| Precondition | User must not be registered |
+| Precondition | User doesn't have to be registered |
 | Post condition | Map shows (zero or more) gas stations filtered by distance from user's current location |
 | Nominal Scenario | User gets geolocalized by GPS system, adds filter by distance from user's current location, map shows filtered gas stations with prices |
 | Variants | User chooses a location, adds filter by distance from choosen location, map shows filtered gas stations with prices |
@@ -245,19 +253,18 @@ ru -- (FR7 Report bugs and data errors)
 
 | Actors Involved | User, Map service |
 | ------------- |:-------------:|
-| Precondition | User must not be registered |
+| Precondition | User doesn't have to be registered |
 | Post condition | Map shows (zero or more) gas stations filtered by facilites |
 | Nominal Scenario | User gets geolocalized by GPS system, adds filter by facilites, map shows filtered gas stations with prices |
 | Variants | User chooses a location, adds filter by facilites, map shows filtered gas stations with prices |
 
-### Use case 7, UC7 - FR7 Report bugs and data errors
+### Use case 7, UC7 - FR7 Report bugs
 
 | Actors Involved | Registered user |
 | ------------- |:-------------:|
 | Precondition | User is a registered user |
 | Post condition| User gets notified via email of the successful report, developers ges notified of the user's report |
-"| Nominal Scenario | User opens settings, taps on 'Report bugs', inserts data describing the bug they have experimented, 
-sends data to the application's developers, receives email confirmation for the action performed |"
+| Nominal Scenario | User reports a bug he found using the application |
 
 
 # Relevant scenarios
@@ -269,8 +276,7 @@ sends data to the application's developers, receives email confirmation for the 
 | Description | User creates new account |
 | Precondition | User is not yet registered |
 | Post condition | User is a registered user |
-| Nominal Scenario | User opens account settings, inserts email and password, accepts terms of use, receives email to confirm their account and confirms it |
-
+| Nominal Scenario | User registers to the application with email and password |
 | Step# | Step description |
 | 1 | User opens sign up section |
 | 2 | User provides email |
@@ -292,7 +298,6 @@ sends data to the application's developers, receives email confirmation for the 
 | Nominal Scenario | User selects location on map, taps on 'New gas station', chooses name for gas station,
 adds fuel types for the gas station, adds prices for each new fuel type |
 | Variants | User selects location on map, taps on 'New gas station', chooses name for gas station |
-
 | Step# | Step description |
 | 1 | User opens map section |
 | 2 | User selects a location on the map |
@@ -311,7 +316,6 @@ adds fuel types for the gas station, adds prices for each new fuel type |
 | Post condition | The price for the fuel type of the selected gas station is updated with the new price |
 | Nominal Scenario | User selects gas station on the map, selects fuel type, updates price |
 | Variants | User selects gas station on the map, adds fuel type, adds new price |
-
 | Step# | Step description |
 | 1 | User opens map section |
 | 2 | User selects a location on the map |
@@ -327,9 +331,7 @@ adds fuel types for the gas station, adds prices for each new fuel type |
 | ------------- |:-------------|
 | Precondition | User is a registered user |
 | Post condition| User gets notified via email of the successful report, developers ges notified of the user's report |
-"| Nominal Scenario | User opens settings, taps on 'Report bugs', inserts data describing the bug they have experimented, 
-sends data to the application's developers, receives email confirmation for the action performed |"
-
+| Nominal Scenario | User reports a bug he found using the application |
 | Step# | Step description |
 | 1 | User opens settings section |
 | 2 | User opens report bugs section |
