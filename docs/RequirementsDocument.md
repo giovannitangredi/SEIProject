@@ -161,21 +161,21 @@ Luigi is a gas station owner. He spends too much time on his gas station, but he
 @startuml
 left to right direction
 
-Class Visitor {
+Class User {
 	+ Longitude
 	+ Latitude
 }
-Class User {
+Class RegisteredUser {
 	+ Username
 	+ Password
 	+ Email
 	+ Phone
-	+ Type
 }
 
-Class GasStation{
+Class GasStation {
 	+ Longitude
 	+ Latitude
+    + Address
 }
 
 Class Schedule {
@@ -196,7 +196,7 @@ Class Fuel{
 	+ Type
 }
 
-Class EZGas{
+Class EZGas {
 }
 
 Class MapService {
@@ -218,18 +218,20 @@ GasStation -- "*" Fuel
 GasStation -- "*" Facility
 GasStation -- "*" Schedule
 GasStation -- "*" Review
-User -|> Visitor
+RegisteredUser -|> User 
+GasStation "*" -- RegisteredUser : search <
 GasStation "*" -- User : search <
-GasStation "*" -- Visitor : search <
-User -- "*" GasStation : add >
-User -- "*" Fuel : update >
-User -- "*" Facility : add >
-Visitor "*" -- EZGas : SignUp >
+RegisteredUser -- "*" GasStation : add >
+RegisteredUser -- "*" Fuel : update >
+RegisteredUser -- "*" Facility : add >
+User "*" -- EZGas : SignUp >
 EZGas -- "*" GasStation
-EZGas -- "*" Visitor
+EZGas -- "*" User 
 EZGas -- MapService
-User -- "*" Review : Add >
-User -- "*" Bug : Report >
+RegisteredUser -- "*" Review : Add >
+RegisteredUser -- "*" Bug : Report >
+EZGas -- "*" Bug
+
 @enduml
 ```
 
