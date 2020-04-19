@@ -217,6 +217,7 @@ Class Bug {
 GasStation -- "*" Fuel
 GasStation -- "*" Facility
 GasStation -- "*" Schedule
+GasStation -- "*" Review
 User -|> Visitor
 GasStation "*" -- User : search <
 GasStation "*" -- Visitor : search <
