@@ -38,8 +38,24 @@ Version: 1.0
 
 ## Context Diagram
 
-<Define here Context diagram using UML use case diagram>
-<actors are a subset of stakeholders>
+```plantuml
+@startuml
+left to right direction
+
+
+actor User as user
+actor "Map Service" as map
+actor "Visitor" as visitor
+
+rectangle System {
+
+user-- (EZGas)
+map--(EZGas) 
+visitor-- (EZGas) 
+
+}
+@enduml
+```
 
 ## Interfaces
 
@@ -141,10 +157,80 @@ Luigi is a gas station owner. He spends too much time on his gas station, but he
 
 
 # Glossary
+```plantuml
+@startuml
+left to right direction
 
-\<use UML class diagram to define important concepts in the domain of the system, and their relationships> 
+Class Visitor {
+	+ Longitude
+	+ Latitude
+}
+Class User {
+	+ Username
+	+ Password
+	+ Email
+	+ Phone
+	+ Type
+}
 
-\<concepts are used consistently all over the document, ex in use cases, requirements etc>
+Class GasStation{
+	+ Longitude
+	+ Latitude
+}
+
+Class Schedule {
+        + Day
+        + TimeSlot
+        + Status
+}
+
+
+
+Class Facility {
+	+ Title
+	+ Price
+}
+
+Class Fuel{
+	+ Price
+	+ Type
+}
+
+Class EZGas{
+}
+
+Class MapService {
+}
+
+Class Review {
+         + Title
+         + Vote
+         + Comment
+         + Date
+}
+
+Class Bug {
+         + Subject
+         + Description
+}
+
+GasStation -- "*" Fuel
+GasStation -- "*" Facility
+GasStation -- "*" Schedule
+User -|> Visitor
+GasStation "*" -- User : search <
+GasStation "*" -- Visitor : search <
+User -- "*" GasStation : add >
+User -- "*" Fuel : update >
+User -- "*" Facility : add >
+Visitor "*" -- EZGas : SignUp >
+EZGas -- "*" GasStation
+EZGas -- "*" Visitor
+EZGas -- MapService
+User -- "*" Review : Add >
+User -- "*" Bug : Report >
+@enduml
+```
 
 # System Design
 \<describe here system design>
