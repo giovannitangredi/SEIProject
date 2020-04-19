@@ -242,4 +242,41 @@ EZGas -- "*" Bug
 
 # Deployment Diagram 
 
-\<describe here deployment diagram >
+```plantuml
+@startuml
+
+node Server {
+
+	node OS {
+		node JVM {
+			artifact WebServer <<artifact>>
+			artifact AppServer <<artifact>>
+
+			WebServer -- AppServer
+		}
+
+		database EZGasDB
+
+		JVM -- EZGasDB
+	}
+
+}
+
+node DesktopClient {
+	artifact "Desktop web browser" <<artifact>>
+}
+
+node MobileClient {
+	artifact "Mobile web browser" <<artifact>>
+}
+
+node MapService {
+	artifact "Map APIs" <<artifact>>
+}
+
+Server -- DesktopClient : Internet
+Server -- MobileClient : Internet
+Server -- MapService : Internet
+
+@enduml
+```
