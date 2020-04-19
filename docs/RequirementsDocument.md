@@ -138,7 +138,7 @@ usecase "FR6 Show on the map service gas stations with their prices" as FR6
 usecase "FR6.1 Filter gas stations on fuel type" as FR6.1
 usecase "FR6.2 Filter gas staton on price" as FR6.2
 usecase "FR6.3 Filter gas stations on distance from the user location" as FR6.3 
-usecase "Filter gas stations on the facilities" as FR6.4
+usecase "FR6.4 Filter gas stations on the facilities" as FR6.4
 usecase "FR7 Report bugs and data errors" as FR7
 
 u -- FR1 
