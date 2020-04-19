@@ -115,7 +115,34 @@ Luigi is a gas station owner. He spends too much time on his gas station, but he
 
 
 ## Use case diagram
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
+
+```plantuml
+@startuml
+
+left to right direction
+actor User as u
+actor "Registered user" as ru
+actor "Map service" as m
+
+u -- (FR1 Create a new user account)
+ru -- (FR2 Deactivating a user account)
+ru -- (FR3 Update user account information)
+ru -- (FR4 Add a gas station with its fuel types, prices and schedule)
+(FR4 Add a gas station with its fuel types, prices and schedule) ..> (FR4.1 Add optional facilities information of a gas station) : include
+(FR4 Add a gas station with its fuel types, prices and schedule) ..> (FR4.2 Add optional review) : include
+(FR4 Add a gas station with its fuel types, prices and schedule) ..> (FR4.3 Add optional schedule) : include
+ru -- (FR5 Update prices of an existing gas station)
+u -- (FR6 Show on the map service gas stations with their prices)
+ru -- (FR6 Show on the map service gas stations with their prices)
+m -- (FR6 Show on the map service gas stations with their prices)
+(FR6 Show on the map service gas stations with their prices) ..> (FR6.1 Filter gas stations on fuel type) : extend
+(FR6 Show on the map service gas stations with their prices) ..> (FR6.2 Filter gas stations on price) : extend
+(FR6 Show on the map service gas stations with their prices) ..> (FR6.3 Filter gas stations on distance from the user location) : extend
+(FR6 Show on the map service gas stations with their prices) ..> (FR6.4 Filter gas stations on the facilities) : extend
+ru -- (FR7 Report bugs and data errors)
+
+@enduml
+```
 
 
 ## Use Cases
