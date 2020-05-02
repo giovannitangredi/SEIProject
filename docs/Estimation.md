@@ -51,7 +51,8 @@ Version: 1
 
 
 ###
-@startuml
+``` plantuml
+@startuml Gantt
 project starts the 2020/05/4
 saturday are closed
 sunday are closed
@@ -62,4 +63,6 @@ then [Coding] lasts 7 days
 then [Unit Testing] lasts 2 days
 then [System Testing] lasts 2 days
 @enduml
+```
+###
 
