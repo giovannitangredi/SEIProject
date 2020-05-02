@@ -1,17 +1,17 @@
 # Project Estimation  
 
-Authors:
+Authors: Enrico Clemente, Luca Francescato, Giovanni Tangredi, Seyedali Mousavi
 
-Date:
+Date: 03/05/2020
 
-Version:
+Version: 1
 
 # Contents
 
 
 
 - [Estimate by product decomposition]
-- [Estimate by activity decomposition ]
+- [Estimate by activity decomposition]
 
 
 
@@ -27,12 +27,12 @@ Version:
 
 |             | Estimate                        |             
 | ----------- | ------------------------------- |  
-| NC =  Estimated number of classes to be developed   |                             |             
-|  A = Estimated average size per class, in LOC       |                            | 
-| S = Estimated size of project, in LOC (= NC * A) | |
-| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  |                                      |   
-| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | | 
-| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) |                    |               
+| NC =  Estimated number of classes to be developed   |10|             
+|  A = Estimated average size per class, in LOC       |200| 
+| S = Estimated size of project, in LOC (= NC * A) |1000|
+| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)|200|   
+| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 6000| 
+| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) | 2 |               
 
 
 # Estimate by activity decomposition
@@ -43,9 +43,23 @@ Version:
 
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-| | |
+| Requirements | 5 |
+| Design | 50  |
+| Coding | 200 |
+| Unit Testing | 60 |
+| System Testing | 40 |
 
 
 ###
-Insert here Gantt chart with above activities
+@startuml
+project starts the 2020/05/4
+saturday are closed
+sunday are closed
+2018/05/01 is closed
+[Requirements] lasts 1 days
+then [Design] lasts 2 days
+then [Coding] lasts 7 days
+then [Unit Testing] lasts 2 days
+then [System Testing] lasts 2 days
+@enduml
 
