@@ -53,10 +53,6 @@ Version: 1
 ###
 ``` plantuml
 @startuml Gantt
-project starts the 2020/05/4
-saturday are closed
-sunday are closed
-2018/05/01 is closed
 [Requirements] lasts 1 days
 then [Design] lasts 2 days
 then [Coding] lasts 7 days
