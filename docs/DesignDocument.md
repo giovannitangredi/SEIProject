@@ -664,6 +664,97 @@ it.polito.ezgas.service -- it.polito.ezgas.controller
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
+# Scenario 7
+```plantuml
+@startuml
+actor UserActor
+    UserActor -> GasStationController: getAllGasStations
+    activate GasStationController
+
+    GasStationController -> GasStationService: getAllGasStations
+    activate GasStationService
+
+    GasStationService --> GasStationController: showGasStations
+    deactivate GasStationService
+
+    GasStationController --> UserActor: showGasStations
+    deactivate GasStationController
+
+    UserActor -> GasStationController: setReport
+    activate GasStationController
+
+    GasStationController -> GasStationService: setReport
+    activate GasStationService
+
+    GasStationService -> GasStation: fuelPricesUpdate 
+
+@enduml
+```
+
+# Scenario 8
+```plantuml
+@startuml
+actor UserActor
+    UserActor -> GasStationController: searchGasStationByProximity
+    activate GasStationController
+
+    GasStationController -> GasStationService: searchGasStationByProximity
+    activate GasStationService
+
+    GasStationService --> GasStationController: showGasStations
+    deactivate GasStationService
+
+    GasStationController --> UserActor: showGasStations
+    deactivate GasStationController
+@enduml
+```
+
+# Scenario 10.1
+```plantuml
+@startuml
+actor UserActor
+    UserActor -> GasStationController: getGasStationById
+    activate GasStationController
+
+    GasStationController -> GasStationService: getGasStationById
+    activate GasStationService
+
+    GasStationService -> GasStation: getPriceList
+    activate GasStation
+
+    GasStation --> GasStationService: showPriceList
+    deactivate GasStation
+
+    GasStationService --> GasStationController: showGasStations
+    deactivate GasStationController
+
+    GasStationController --> UserActor: showGasStations
+    deactivate GasStationService
+
+    UserActor -> GasStationController: setReport('Correct')
+    activate GasStationController
+
+    GasStationController -> GasStationService: setReport('Correct')
+    activate GasStationService
+
+    GasStationService -> GasStation: setReport('Correct')
+    activate GasStation
+
+    GasStation -> UserService: getUserById
+    activate UserService
+
+    UserService --> GasStation : getUserById
+    deactivate UserService
+
+    GasStation -> UserService: increaseUserReputation
+    activate UserService
+
+    UserService -> User: setTrustLevel(+1)
+    
+@enduml
+```
+
+
 
 
 
