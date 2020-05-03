@@ -1,11 +1,11 @@
 # Design Document 
 
 
-Authors: 
+Authors: Enrico Clemente, Luca Francescato, Giovanni Tangredi, Seyedali Mousavi
 
-Date:
+Date: 03/05/2020
 
-Version:
+Version: 1
 
 
 # Contents
@@ -220,7 +220,7 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 # Low level design
 
-<Based on the official requirements and on the Spring Boot design guidelines, define the required classes (UML class diagram) of the back-end in the proper packages described in the high-level design section.>
+
 
 ```plantuml
 @startuml
@@ -636,6 +636,7 @@ it.polito.ezgas.dto -- it.polito.ezgas.service
 it.polito.ezgas.service -- it.polito.ezgas.controller
 
 @enduml
+
 ```
 
 
@@ -649,20 +650,32 @@ it.polito.ezgas.service -- it.polito.ezgas.controller
 
 # Verification traceability matrix
 
-\<for each functional requirement from the requirement document, list which classes concur to implement it>
 
-
-
-
-
-
+| FR Code | User | GasStation | PriceList | UserServiceImpl | GasStationImpl |
+| --------|:---:|:-----------:|:---------:|:----------------:| ---------------|
+| FR1.1   |      |            |           |        X        |                |  
+| FR1.2   |   X  |            |           |        X        |                |  
+| FR1.3   |   X  |            |           |        X        |                |  
+| FR1.4   |      |            |           |        X        |                |  
+| FR2     |   X  |            |           |        X        |                |  
+| FR3.1   |      |      X     |           |                 |       X        |  
+| FR3.2   |      |      X     |           |                 |       X        |  
+| FR3.3   |      |      X     |           |                 |       X        |  
+| FR4.1   |  X   |      X     |           |                 |       X        |  
+| FR4.2   |  X   |      X     |           |                 |       X        |  
+| FR4.3   |  X   |      X     |           |       X         |       X        |  
+| FR4.4   |  X   |      X     |     X     |                 |       X        |  
+| FR4.5   |  X   |      X     |     X     |                 |       X        |  
+| FR5.1   |  X   |      X     |     X     |                 |       X        |  
+| FR5.2   |  X   |      X     |     X     |       X         |                |  
+| FR5.3   |      |      X     |     X     |                 |       X        |  
 
 
 
 
 
 # Verification sequence diagrams 
-\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
+
 
 # Scenario 7
 ```plantuml
@@ -689,6 +702,7 @@ actor UserActor
     GasStationService -> GasStation: fuelPricesUpdate 
 
 @enduml
+
 ```
 
 # Scenario 8
@@ -707,6 +721,7 @@ actor UserActor
     GasStationController --> UserActor: showGasStations
     deactivate GasStationController
 @enduml
+
 ```
 
 # Scenario 10.1
@@ -752,6 +767,7 @@ actor UserActor
     UserService -> User: setTrustLevel(+1)
     
 @enduml
+
 ```
 
 
