@@ -43,7 +43,7 @@ Version: 1
 
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-| Requirements | 5 |
+| Requirements | 20 |
 | Design | 50  |
 | Coding | 200 |
 | Unit Testing | 60 |
