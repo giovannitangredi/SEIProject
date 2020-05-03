@@ -626,6 +626,7 @@ package it.polito.ezgas.controller #CCDDBB {
         GasStationDto saveGasStation()
         boolena deleteGasStation()
         void setReport() 
+        void evaluatePrices()
     }
 }
 
@@ -636,16 +637,7 @@ it.polito.ezgas.dto -- it.polito.ezgas.service
 it.polito.ezgas.service -- it.polito.ezgas.controller
 
 @enduml
-
 ```
-
-
-
-
-
-
-
-
 
 
 # Verification traceability matrix
@@ -653,24 +645,22 @@ it.polito.ezgas.service -- it.polito.ezgas.controller
 
 | FR Code | User | GasStation | PriceList | UserServiceImpl | GasStationImpl |
 | --------|:---:|:-----------:|:---------:|:----------------:| ---------------|
-| FR1.1   |      |            |           |        X        |                |  
+| FR1.1   |   X  |            |           |        X        |                |  
 | FR1.2   |   X  |            |           |        X        |                |  
 | FR1.3   |   X  |            |           |        X        |                |  
-| FR1.4   |      |            |           |        X        |                |  
+| FR1.4   |   X  |            |           |        X        |                |  
 | FR2     |   X  |            |           |        X        |                |  
 | FR3.1   |      |      X     |           |                 |       X        |  
 | FR3.2   |      |      X     |           |                 |       X        |  
 | FR3.3   |      |      X     |           |                 |       X        |  
-| FR4.1   |  X   |      X     |           |                 |       X        |  
-| FR4.2   |  X   |      X     |           |                 |       X        |  
-| FR4.3   |  X   |      X     |           |       X         |       X        |  
-| FR4.4   |  X   |      X     |     X     |                 |       X        |  
-| FR4.5   |  X   |      X     |     X     |                 |       X        |  
-| FR5.1   |  X   |      X     |     X     |                 |       X        |  
-| FR5.2   |  X   |      X     |     X     |       X         |                |  
-| FR5.3   |      |      X     |     X     |                 |       X        |  
-
-
+| FR4.1   |      |      X     |           |                 |       X        |  
+| FR4.2   |      |      X     |           |                 |       X        |  
+| FR4.3   |      |      X     |           |                 |       X        |  
+| FR4.4   |      |      X     |     X     |                 |       X        |  
+| FR4.5   |      |      X     |     X     |                 |       X        |  
+| FR5.1   |   X  |      X     |     X     |                 |       X        |  
+| FR5.2   |      |      X     |     X     |                 |                |  
+| FR5.3   |   X  |      X     |     X     |        X        |       X        |  
 
 
 
@@ -746,13 +736,13 @@ actor UserActor
     GasStationController --> UserActor: showGasStations
     deactivate GasStationService
 
-    UserActor -> GasStationController: setReport('Correct')
+    UserActor -> GasStationController: evaluatePrices('Correct')
     activate GasStationController
 
-    GasStationController -> GasStationService: setReport('Correct')
+    GasStationController -> GasStationService: evaluatePrices('Correct')
     activate GasStationService
 
-    GasStationService -> GasStation: setReport('Correct')
+    GasStationService -> GasStation: evaluatePrices('Correct')
     activate GasStation
 
     GasStation -> UserService: getUserById
