@@ -222,7 +222,420 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 <Based on the official requirements and on the Spring Boot design guidelines, define the required classes (UML class diagram) of the back-end in the proper packages described in the high-level design section.>
 
+```plantuml
+left to right direction
 
+package it.polito.ezgas.entity #DDDDDD {
+
+    Class User {
+        + String ID
+        + String name
+        + String pwd
+        + String email
+        + Integer trustLevel
+        + boolean admin
+
+        String getId()
+        String getName()
+        String getPwd()
+        String getEmail()
+        Integer getTrustLevel()
+        boolean getAdmin()
+
+        void setId()
+        void setName()
+        void setPwd()
+        void setEmail()
+        void setTrustLevel()
+        void setAdmin()
+    }
+
+    Class GasStation {
+        + String ID
+        + String name
+        + String address
+        + String brand
+        + double latitude
+        + double longitute
+        + boolean hasDiesel
+        + boolean hasGasoline
+        + boolean hasPremiumDiesel
+        + boolean hasPremiumGasoline
+        + boolean hasLPG
+        + boolean hasMethane
+        + List<PriceList> fuelPrices
+        + String carSharingCompany
+
+        String getID()
+        String getName()
+        String getAddress()
+        String getBrand()
+        String getLatitude()
+        String getLongitude()
+        boolean getHasDiesel()
+        boolean getHasGasoline()
+        boolean getHasPremiumDiesel()
+        booelan getHasPremiumGasoline()
+        boolean getHasLPG()
+        boolean getHasMethane()
+        List<PriceList> getFuelPrices()
+        String getCarSharingCompany()
+
+        void setID()
+        void setName()
+        void setAddress()
+        void setBrand()
+        void setLatitude()
+        void setLongitude()
+        void setHasDiesel()
+        void setHasGasoline()
+        void setHasPremiumDiesel()
+        void setHasPremiumGasoline()
+        void setHasLPG()
+        void sethasMethane()
+        void addFuelPrices()
+        void setCarSharingCompany()
+    }
+
+    Class PriceList {
+        + String timeTag
+        + double dieselPrice
+        + double gasolinePrice
+        + double premiumDieselPrice
+        + double premiumGasolinePrice
+        + double LPGPrice
+        + double methanePrice
+        + Integer trustLevel
+        + User user
+
+        String getTimeTag()
+        double getDieselPrice()
+        double getGasolinePrice()
+        double getPremiumDieselPrice()
+        double getPremiumGasolinePrice()
+        double getLPGPrice()
+        double getMethanePrice()
+        Integer getTrustLevel()
+        User getUser()
+
+        void setTimeTag()
+        void setDieselPrice()
+        void setGasolinePrice()
+        void setPremiumDieselPrice()
+        void setPremiumGasolinePrice()
+        void setLPGPrice()
+        void setMethanePrice()
+        void setTrustLevel()
+        void setUser()
+    }
+}
+
+package it.polito.ezgas.repository #CCCCDD {
+
+    Class UserRepository { 
+        + String ID
+        + String name
+        + String pwd
+        + String email
+        + Integer trustLevel
+        + boolean admin
+
+        String getId()
+        String getName()
+        String getPwd()
+        String getEmail()
+        Integer getTrustLevel()
+        boolean getAdmin()
+        
+        void setId()
+        void setName()
+        void setPwd()
+        void setEmail()
+        void setTrustLevel()
+        void setAdmin()
+    }
+
+    Class GasStationRepository { 
+        + String ID
+        + String name
+        + String address
+        + String brand
+        + double latitude
+        + double longitute
+        + boolean hasDiesel
+        + boolean hasGasoline
+        + boolean hasPremiumDiesel
+        + boolean hasPremiumGasoline
+        + boolean hasLPG
+        + boolean hasMethane
+        + List<PriceList> fuelPrices
+        + String carSharingCompany
+
+        String getID()
+        String getName()
+        String getAddress()
+        String getBrand()
+        String getLatitude()
+        String getLongitude()
+        boolean getHasDiesel()
+        boolean getHasGasoline()
+        boolean getHasPremiumDiesel()
+        booelan getHasPremiumGasoline()
+        boolean getHasLPG()
+        boolean getHasMethane()
+        List<PriceList> getFuelPrices()
+        String getCarSharingCompany()
+
+        void setID()
+        void setName()
+        void setAddress()
+        void setBrand()
+        void setLatitude()
+        void setLongitude()
+        void setHasDiesel()
+        void setHasGasoline()
+        void setHasPremiumDiesel()
+        void setHasPremiumGasoline()
+        void setHasLPG()
+        void sethasMethane()
+        void addFuelPrices()
+        void setCarSharingCompany()
+    }
+
+    Class PriceListRepository { 
+        + String timeTag
+        + double dieselPrice
+        + double gasolinePrice
+        + double premiumDieselPrice
+        + double premiumGasolinePrice
+        + double LPGPrice
+        + double methanePrice
+        + Integer trustLevel
+        + User user
+
+        String getTimeTag()
+        double getDieselPrice()
+        double getGasolinePrice()
+        double getPremiumDieselPrice()
+        double getPremiumGasolinePrice()
+        double getLPGPrice()
+        double getMethanePrice()
+        Integer getTrustLevel()
+        User getUser()
+
+        void setTimeTag()
+        void setDieselPrice()
+        void setGasolinePrice()
+        void setPremiumDieselPrice()
+        void setPremiumGasolinePrice()
+        void setLPGPrice()
+        void setMethanePrice()
+        void setTrustLevel()
+        void setUser()
+    }
+}
+
+package it.polito.ezgas.converter #CCCCBB {
+    Class UserConverter { 
+        UserDto convertToUserDto()
+    }
+    Class GasStationConverter { 
+        GasStationDto convertToGasStationDto()
+    }
+    Class PriceListConverter { 
+        PriceListDto convertToPriceListDto()
+    }
+}
+
+package it.polito.ezgas.dto #CCDDDD {
+
+    Class UserDto { 
+        + String ID
+        + String name
+        + String pwd
+        + String email
+        + Integer trustLevel
+        + boolean admin
+
+        String getId()
+        String getName()
+        String getPwd()
+        String getEmail()
+        Integer getTrustLevel()
+        boolean getAdmin()
+
+        void setId()
+        void setName()
+        void setPwd()
+        void setEmail()
+        void setTrustLevel()
+        void setAdmin()
+    }
+    Class GasStationDto { 
+        + String ID
+        + String name
+        + String address
+        + String brand
+        + double latitude
+        + double longitute
+        + boolean hasDiesel
+        + boolean hasGasoline
+        + boolean hasPremiumDiesel
+        + boolean hasPremiumGasoline
+        + boolean hasLPG
+        + boolean hasMethane
+        + List<PriceListDto> fuelPrices
+        + String carSharingCompany
+
+        String getID()
+        String getName()
+        String getAddress()
+        String getBrand()
+        String getLatitude()
+        String getLongitude()
+        boolean getHasDiesel()
+        boolean getHasGasoline()
+        boolean getHasPremiumDiesel()
+        booelan getHasPremiumGasoline()
+        boolean getHasLPG()
+        boolean getHasMethane()
+        List<PriceListDto> getFuelPrices()
+        String getCarSharingCompany()
+
+        void setID()
+        void setName()
+        void setAddress()
+        void setBrand()
+        void setLatitude()
+        void setLongitude()
+        void setHasDiesel()
+        void setHasGasoline()
+        void setHasPremiumDiesel()
+        void setHasPremiumGasoline()
+        void setHasLPG()
+        void sethasMethane()
+        void addFuelPrices()
+        void setCarSharingCompany()
+    }
+    Class PriceListDto { 
+        + String timeTag
+        + double dieselPrice
+        + double gasolinePrice
+        + double premiumDieselPrice
+        + double premiumGasolinePrice
+        + double LPGPrice
+        + double methanePrice
+        + Integer trustLevel
+        + UserDto user
+
+        String getTimeTag()
+        double getDieselPrice()
+        double getGasolinePrice()
+        double getPremiumDieselPrice()
+        double getPremiumGasolinePrice()
+        double getLPGPrice()
+        double getMethanePrice()
+        Integer getTrustLevel()
+        UserDto getUser()
+
+        void setTimeTag()
+        void setDieselPrice()
+        void setGasolinePrice()
+        void setPremiumDieselPrice()
+        void setPremiumGasolinePrice()
+        void setLPGPrice()
+        void setMethanePrice()
+        void setTrustLevel()
+        void setUser()
+    }
+    Class LoginDto { 
+        + String ID
+        + String name
+        + String pwd
+        + String email
+        + Integer trustLevel
+        + boolean admin
+
+        String getId()
+        String getName()
+        String getPwd()
+        String getEmail()
+        Integer getTrustLevel()
+        boolean getAdmin()
+
+        void setId()
+        void setName()
+        void setPwd()
+        void setEmail()
+        void setTrustLevel()
+        void setAdmin()
+    }
+
+}
+
+package it.polito.ezgas.service #CCAABB {
+
+    Interface UserService {
+        UserDto getUserById()
+        List<UserDto> getAllUsers()
+        UserDto saveUser()
+        boolean deleteUser()
+        LoginDto login()
+        Integer increaseUserReputation()
+        Integer decreaseUserReputation()
+    }
+    Class UserServiceImpl { }
+
+    Interface GasStationService {
+        GasStationDto getGasStationById()
+        List<GasStationDto> getAllGasStations()
+        List<GasStationDto> getGasStationsByGasolineType()
+        List<GasStationDto> getGasStationsByProximity()
+        List<GasStationDto> getGasStationByCarSharing()
+        List<GasStationDto> getGasStationsWithCoordinates()
+        List<GasStationDto> getGasStationsWithoutCoordinates()
+        GasStationDto saveGasStation()
+        boolena deleteGasStation()
+        void setReport()
+    }
+    Class GasStationServiceImpl { }
+    
+    UserServiceImpl --|> UserService
+    GasStationServiceImpl --|> GasStationService
+}
+
+package it.polito.ezgas.controller #CCDDBB {
+    Class UserController { 
+        UserDto getUserById()
+        List<UserDto> getAllUsers()
+        UserDto saveUser()
+        boolean deleteUser()
+        LoginDto login()
+        Integer increaseUserReputation()
+        Integer decreaseUserReputation()
+    }
+    Class GasStationController { 
+        GasStationDto getGasStationById()
+        List<GasStationDto> getAllGasStations()
+        List<GasStationDto> getGasStationsByGasolineType()
+        List<GasStationDto> getGasStationsByProximity()
+        List<GasStationDto> getGasStationByCarSharing()
+        List<GasStationDto> getGasStationsWithCoordinates()
+        List<GasStationDto> getGasStationsWithoutCoordinates()
+        GasStationDto saveGasStation()
+        boolena deleteGasStation()
+        void setReport() 
+    }
+}
+
+it.polito.ezgas.entity -- it.polito.ezgas.repository
+it.polito.ezgas.repository -- it.polito.ezgas.converter
+it.polito.ezgas.converter -- it.polito.ezgas.dto
+it.polito.ezgas.dto -- it.polito.ezgas.service
+it.polito.ezgas.service -- it.polito.ezgas.controller
+
+
+```
 
 
 
