@@ -223,6 +223,7 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 <Based on the official requirements and on the Spring Boot design guidelines, define the required classes (UML class diagram) of the back-end in the proper packages described in the high-level design section.>
 
 ```plantuml
+@startuml
 left to right direction
 
 package it.polito.ezgas.entity #DDDDDD {
@@ -634,7 +635,7 @@ it.polito.ezgas.converter -- it.polito.ezgas.dto
 it.polito.ezgas.dto -- it.polito.ezgas.service
 it.polito.ezgas.service -- it.polito.ezgas.controller
 
-
+@enduml
 ```
 
 
