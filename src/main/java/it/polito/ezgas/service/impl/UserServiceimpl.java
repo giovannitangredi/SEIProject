@@ -63,7 +63,10 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public LoginDto login(IdPw credentials) throws InvalidLoginDataException {
 		// TODO Auto-generated method stub
-		return null;
+		User user= userRepository.findByUserNameAndPassword(credentials.getUser(), credentials.getPw());
+		if(user==null)
+			throw new InvalidLoginDataException("WRONG CREDENTIALS");
+		return UserConverter.toLoginDto(user);
 	}
 
 	@Override
