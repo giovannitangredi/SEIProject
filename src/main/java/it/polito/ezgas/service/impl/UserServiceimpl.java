@@ -2,13 +2,17 @@ package it.polito.ezgas.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import exception.InvalidLoginDataException;
 import exception.InvalidUserException;
+import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.IdPw;
 import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
+import it.polito.ezgas.entity.User;
+import it.polito.ezgas.repository.UserRepository;
 import it.polito.ezgas.service.UserService;
 
 /**
@@ -16,11 +20,17 @@ import it.polito.ezgas.service.UserService;
  */
 @Service
 public class UserServiceimpl implements UserService {
-
+	@Autowired
+	UserRepository userRepository;
+	UserConverter userConverter =new UserConverter();
 	@Override
 	public UserDto getUserById(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
-		return null;
+		User user;
+		user=userRepository.findOne(userId);
+		if(user==null)
+			throw new InvalidUserException("ERROR: USER NOT FOUND");
+		return userConverter.toUserDto(user);
 	}
 
 	@Override

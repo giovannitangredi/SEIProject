@@ -16,4 +16,15 @@ public class UserConverter {
 		
 		return userConverted;
 	}
+	public static User toUser(UserDto user) {
+		User userConverted = new User();
+		userConverted.setUserId(user.getUserId());
+		userConverted.setUserName(user.getUserName());
+		userConverted.setPassword(user.getPassword());
+		userConverted.setEmail(user.getEmail());
+		userConverted.setReputation(user.getReputation());
+		userConverted.setAdmin(user.getAdmin());
+		
+		return userConverted;
+	}
 }
