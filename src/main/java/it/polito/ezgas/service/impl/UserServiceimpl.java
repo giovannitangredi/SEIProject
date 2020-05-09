@@ -78,6 +78,7 @@ public class UserServiceimpl implements UserService {
 			throw new InvalidUserException("USER DOESN'T EXITS");
 		newreputation= user.getReputation()+1;
 		user.setReputation(newreputation);
+		user=userRepository.save(user);
 		return user.getReputation();
 	}
 
@@ -90,6 +91,7 @@ public class UserServiceimpl implements UserService {
 			throw new InvalidUserException("USER DOESN'T EXITS");
 		newreputation= user.getReputation()-1;
 		user.setReputation(newreputation);
+		user=userRepository.save(user);
 		return user.getReputation();
 	}
 	
