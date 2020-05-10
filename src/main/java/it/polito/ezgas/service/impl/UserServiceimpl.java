@@ -27,11 +27,11 @@ public class UserServiceimpl implements UserService {
 	public UserDto getUserById(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
 		User user;
-		if(userId<0)
+		if(userId==null || userId<0)
 			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		user=userRepository.findOne(userId);
 		if(user==null)
-			throw new InvalidUserException("ERROR: USER NOT FOUND");
+			return null;
 		return UserConverter.toUserDto(user);
 	}
 
@@ -47,17 +47,21 @@ public class UserServiceimpl implements UserService {
 	public List<UserDto> getAllUsers() {
 		// TODO Auto-generated method stub
 		ArrayList<UserDto> list= new ArrayList<UserDto>();
-		userRepository.findAll().forEach((user)->list.add(UserConverter.toUserDto(user)));
+		List<User> listUser;
+		listUser=userRepository.findAll();
+		if(listUser==null)
+			return list;
+		listUser.forEach((user)->list.add(UserConverter.toUserDto(user)));
 		return list;
 	}
 
 	@Override
 	public Boolean deleteUser(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
-		if(userId<0)
+		if(userId==null || userId<0)
 			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		if(!userRepository.exists(userId))
-			throw new InvalidUserException("ERROR INVALID USER");
+			return false;
 		userRepository.delete(userId);
 		if(userRepository.exists(userId))
 			return false;
@@ -77,11 +81,11 @@ public class UserServiceimpl implements UserService {
 	public Integer increaseUserReputation(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
 		Integer newreputation=-6;
-		if(userId<0)
+		if(userId==null || userId<0)
 			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		User user= userRepository.findOne(userId);
 		if(user==null)
-			throw new InvalidUserException("USER DOESN'T EXITS");
+			return null;
 		newreputation= user.getReputation()+1;
 		user.setReputation(newreputation);
 		user=userRepository.save(user);
@@ -92,11 +96,11 @@ public class UserServiceimpl implements UserService {
 	public Integer decreaseUserReputation(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
 		Integer newreputation=-6;
-		if(userId<0)
+		if(userId==null || userId<0)
 			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		User user= userRepository.findOne(userId);
 		if(user==null)
-			throw new InvalidUserException("USER DOESN'T EXITS");
+			return null;
 		newreputation= user.getReputation()-1;
 		user.setReputation(newreputation);
 		user=userRepository.save(user);
