@@ -27,6 +27,8 @@ public class UserServiceimpl implements UserService {
 	public UserDto getUserById(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
 		User user;
+		if(userId<0)
+			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		user=userRepository.findOne(userId);
 		if(user==null)
 			throw new InvalidUserException("ERROR: USER NOT FOUND");
@@ -52,6 +54,8 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public Boolean deleteUser(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
+		if(userId<0)
+			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		if(!userRepository.exists(userId))
 			throw new InvalidUserException("ERROR INVALID USER");
 		userRepository.delete(userId);
@@ -63,7 +67,7 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public LoginDto login(IdPw credentials) throws InvalidLoginDataException {
 		// TODO Auto-generated method stub
-		User user= userRepository.findByUserNameAndPassword(credentials.getUser(), credentials.getPw());
+		User user= userRepository.findByEmailAndPassword(credentials.getUser(), credentials.getPw());
 		if(user==null)
 			throw new InvalidLoginDataException("WRONG CREDENTIALS");
 		return UserConverter.toLoginDto(user);
@@ -73,6 +77,8 @@ public class UserServiceimpl implements UserService {
 	public Integer increaseUserReputation(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
 		Integer newreputation=-6;
+		if(userId<0)
+			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		User user= userRepository.findOne(userId);
 		if(user==null)
 			throw new InvalidUserException("USER DOESN'T EXITS");
@@ -86,6 +92,8 @@ public class UserServiceimpl implements UserService {
 	public Integer decreaseUserReputation(Integer userId) throws InvalidUserException {
 		// TODO Auto-generated method stub
 		Integer newreputation=-6;
+		if(userId<0)
+			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		User user= userRepository.findOne(userId);
 		if(user==null)
 			throw new InvalidUserException("USER DOESN'T EXITS");
