@@ -368,6 +368,7 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public List<GasStationDto> getGasStationsWithoutCoordinates(String gasolinetype, String carsharing)
 			throws InvalidGasTypeException {
+		/*
 		//retrieving all gas stations
 		List<GasStation> gasStations = repository.findAll();
 		if( gasStations == null ) {
@@ -409,6 +410,41 @@ public class GasStationServiceimpl implements GasStationService {
 		return filteredGasStations
 				.map( g -> GasStationConverter.toGasStationDto(g))	//converting each GasStation to GasStationDto
 				.collect(Collectors.toList());
+		*/
+		//retrieving gas stations by proximity
+		//exceptions not handled because they should be launched by the called methods
+		List<GasStationDto> gasStationsByFuelType = new ArrayList<GasStationDto>(); 
+		List<GasStationDto> gasStationsByFuelTypeAndCarSharing = new ArrayList<GasStationDto>();
+		List<GasStationDto> gasStationsFiltered = new ArrayList<GasStationDto>();
+		
+		if( gasolinetype != null ) {
+			//retrieving gas stations by fuel type and convert it into list of ids
+			gasStationsByFuelType = getGasStationsByGasolineType(gasolinetype);
+			
+			if( gasStationsByFuelType.isEmpty() ) {
+				return new ArrayList<GasStationDto>(); 
+			}
+			
+			gasStationsFiltered = gasStationsByFuelType;
+		}
+		
+		if( carsharing != null ) {
+			//retrieving gas stations by car sharing and convert it into list of ids
+			List<Integer> gasStationsByCarSharing = getGasStationByCarSharing(carsharing).stream()
+																.map( g -> g.getGasStationId()).collect(Collectors.toList());
+			if( gasStationsByCarSharing.isEmpty() ) {
+				return new ArrayList<GasStationDto>();
+			}
+			
+			//intersection between gas stations by proximity and gas stations by fuel type and by car sharing
+			gasStationsByFuelTypeAndCarSharing = 
+					gasStationsByFuelType.stream()
+					.filter( g -> gasStationsByCarSharing.contains(g.getGasStationId())).collect(Collectors.toList());
+			gasStationsFiltered = gasStationsByFuelTypeAndCarSharing;
+		}
+		
+		
+		return gasStationsFiltered;
 	}
 
 	@Override
