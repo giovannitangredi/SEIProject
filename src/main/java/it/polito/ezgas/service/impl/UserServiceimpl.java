@@ -2,12 +2,14 @@ package it.polito.ezgas.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import exception.InvalidLoginDataException;
 import exception.InvalidUserException;
+import it.polito.ezgas.converter.LoginConverter;
 import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.IdPw;
 import it.polito.ezgas.dto.LoginDto;
@@ -39,6 +41,10 @@ public class UserServiceimpl implements UserService {
 	public UserDto saveUser(UserDto userDto) {
 		// TODO Auto-generated method stub
 		User user=UserConverter.toUser(userDto);
+		if(userRepository.findByEmail(user.getEmail()).size()>0)
+			return null;
+		if(userRepository.exists(user.getUserId()))
+			return null;
 		user=userRepository.save(user);
 		return UserConverter.toUserDto(user);
 	}
@@ -46,13 +52,13 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public List<UserDto> getAllUsers() {
 		// TODO Auto-generated method stub
-		ArrayList<UserDto> list= new ArrayList<UserDto>();
 		List<User> listUser;
 		listUser=userRepository.findAll();
 		if(listUser==null)
-			return list;
-		listUser.forEach((user)->list.add(UserConverter.toUserDto(user)));
-		return list;
+			return new ArrayList<UserDto>();
+		return listUser.stream()
+				.map(u ->UserConverter.toUserDto(u))//convert to UserDto
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -74,7 +80,7 @@ public class UserServiceimpl implements UserService {
 		User user= userRepository.findByEmailAndPassword(credentials.getUser(), credentials.getPw());
 		if(user==null)
 			throw new InvalidLoginDataException("WRONG CREDENTIALS");
-		return UserConverter.toLoginDto(user);
+		return LoginConverter.toLoginDto(user);
 	}
 
 	@Override
@@ -86,7 +92,10 @@ public class UserServiceimpl implements UserService {
 		User user= userRepository.findOne(userId);
 		if(user==null)
 			return null;
-		newreputation= user.getReputation()+1;
+		if(user.getReputation()<5)
+			newreputation= user.getReputation()+1;
+		else
+			newreputation=user.getReputation();
 		user.setReputation(newreputation);
 		user=userRepository.save(user);
 		return user.getReputation();
@@ -101,7 +110,10 @@ public class UserServiceimpl implements UserService {
 		User user= userRepository.findOne(userId);
 		if(user==null)
 			return null;
-		newreputation= user.getReputation()-1;
+		if(user.getReputation()>-5)
+			newreputation= user.getReputation()-1;
+		else
+			newreputation=user.getReputation();
 		user.setReputation(newreputation);
 		user=userRepository.save(user);
 		return user.getReputation();
