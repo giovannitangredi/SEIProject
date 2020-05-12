@@ -347,6 +347,11 @@ package it.polito.ezgas.dto #CCDDDD {
         + Boolean admin
     }
 
+    Class IdPw {
+	    + String user
+	    + String pw
+    }
+
 }
 
 package it.polito.ezgas.service #CCAABB {
