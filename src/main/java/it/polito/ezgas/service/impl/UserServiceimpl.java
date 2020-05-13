@@ -41,11 +41,20 @@ public class UserServiceimpl implements UserService {
 	public UserDto saveUser(UserDto userDto) {
 		// TODO Auto-generated method stub
 		User user=UserConverter.toUser(userDto);
-		if(userRepository.findByEmail(user.getEmail()).size()>0)
-			return null;
-		if(userRepository.exists(user.getUserId()))
-			return null;
-		user=userRepository.save(user);
+		if(user.getUserId()==null)
+		{
+			if(userRepository.findByEmail(user.getEmail()).size()>0)
+				return null;
+			user=userRepository.save(user);
+		}
+		else
+		{
+			User old=userRepository.findOne(user.getUserId());
+			if(!user.getEmail().equals(old.getEmail()))
+				if(userRepository.findByEmail(user.getEmail()).size()>0)
+					return null;
+			user=userRepository.save(user);	
+		}
 		return UserConverter.toUserDto(user);
 	}
 
