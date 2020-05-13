@@ -21,6 +21,7 @@ import it.polito.ezgas.dto.GasStationDto;
 import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.repository.GasStationRepository;
 import it.polito.ezgas.service.GasStationService;
+import it.polito.ezgas.service.UserService;
 
 /**
  * Created by softeng on 27/4/2020.
@@ -30,6 +31,9 @@ public class GasStationServiceimpl implements GasStationService {
 	//"connection" to the DB
 	@Autowired
 	GasStationRepository repository;
+	
+	@Autowired
+	UserService userService;
 	
 	
 	@Override
@@ -51,22 +55,27 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public GasStationDto saveGasStation(GasStationDto gasStationDto) throws PriceException, GPSDataException {
 		//price error handling
-		if(gasStationDto.getDieselPrice()<0 || gasStationDto.getSuperPrice()<0 ||
-		  gasStationDto.getSuperPlusPrice()<0 || gasStationDto.getMethanePrice()<0 ) {
-			throw new PriceException("Invalide price values!");
-		}
-		
-		//GPS error handling
-		if(gasStationDto.getLat()>90 || gasStationDto.getLat()<-90) {
-			throw new GPSDataException("Latitude out of boundaries!");
-		}
-		if(gasStationDto.getLon()>180 || gasStationDto.getLon()<-180) {
-			throw new GPSDataException("Longitude out of boundaries!");
-		}
+//		if(gasStationDto.getDieselPrice()<0 || gasStationDto.getSuperPrice()<0 ||
+//		  gasStationDto.getSuperPlusPrice()<0 || gasStationDto.getMethanePrice()<0 ) {
+//			throw new PriceException("Invalide price values!");
+//		}
+//		
+//		//GPS error handling
+//		if(gasStationDto.getLat()>90 || gasStationDto.getLat()<-90) {
+//			throw new GPSDataException("Latitude out of boundaries!");
+//		}
+//		if(gasStationDto.getLon()>180 || gasStationDto.getLon()<-180) {
+//			throw new GPSDataException("Longitude out of boundaries!");
+//		}
 		
 		//inserting new gas station or updating an existing one
-		GasStation gasStation = repository.save(GasStationConverter.toGasStation(gasStationDto));
-		
+		GasStation gasStation = new GasStation();
+		try {
+			gasStation = repository.save(GasStationConverter.toGasStation(gasStationDto));
+		}
+		catch (Exception ex) { 
+			System.out.println(ex.getMessage());
+		}
 		return GasStationConverter.toGasStationDto(gasStation);
 	}
 
@@ -456,9 +465,9 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new InvalidGasStationException("Invalid Gas Station ID!");
 		}
 		//price error handling
-		if(dieselPrice <0 || superPrice<0 || superPlusPrice<0 || methanePrice<0 ) {
-			throw new PriceException("Invalide price values!");
-		}
+//		if(dieselPrice <0 || superPrice<0 || superPlusPrice<0 || methanePrice<0 ) {
+//			throw new PriceException("Invalide price values!");
+//		}
 		//user id error handling
 		if( userId<0 ) {
 			throw new InvalidUserException("Invalid User ID!");
@@ -477,8 +486,8 @@ public class GasStationServiceimpl implements GasStationService {
 		// TODO what is dependability
 		gasStationDto.setReportTimestamp(LocalDateTime.now().toString());
 		//gasStation.setReportDependability(reportDependability);
-		UserServiceimpl user = new UserServiceimpl();
-		gasStationDto.setUserDto(user.getUserById(userId));
+
+		gasStationDto.setUserDto(userService.getUserById(userId));
 		
 		//updating an existing one
 		repository.save(GasStationConverter.toGasStation(gasStationDto));
