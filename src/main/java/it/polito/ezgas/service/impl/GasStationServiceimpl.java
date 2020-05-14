@@ -464,12 +464,6 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new InvalidGasStationException("Invalid Gas Station ID!");
 		}
 		
-		// TODO check the passed values for handling this exception
-		//price error handling
-//		if(dieselPrice <0 || superPrice<0 || superPlusPrice<0 || methanePrice<0 ) {
-//			throw new PriceException("Invalide price values!");
-//		}
-
 		//user id error handling
 		if( userId<0 ) {
 			throw new InvalidUserException("Invalid User ID!");
@@ -479,6 +473,24 @@ public class GasStationServiceimpl implements GasStationService {
 		if( gasStationDto == null ) {
 			return;
 		}
+		
+		//price error handling 
+		if( gasStationDto.getHasDiesel() == true && dieselPrice<0 ) {
+			throw new PriceException("Invalide diesel price value!");
+		}
+		if( gasStationDto.getHasSuper() == true && superPrice<0 ) {
+			throw new PriceException("Invalide super price value!");
+		}
+		if( gasStationDto.getHasSuperPlus() == true && superPlusPrice<0 ) {
+			throw new PriceException("Invalide super plus price value!");
+		}
+		if( gasStationDto.getHasGas() == true && gasPrice<0 ) {
+			throw new PriceException("Invalide gas price value!");
+		}
+		if( gasStationDto.getHasMethane() == true && methanePrice<0 ) {
+			throw new PriceException("Invalide methane price value!");
+		}
+		
 		gasStationDto.setDieselPrice(dieselPrice);
 		gasStationDto.setSuperPrice(superPrice);
 		gasStationDto.setSuperPlusPrice(superPlusPrice);
