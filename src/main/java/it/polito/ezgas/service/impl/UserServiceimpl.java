@@ -31,9 +31,9 @@ public class UserServiceimpl implements UserService {
 		User user;
 		if(userId==null || userId<0)
 			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
-		user=userRepository.findOne(userId);
+		user=userRepository.findOne(userId); // find user by id
 		if(user==null)
-			return null;
+			return null;//user with that id doesn't exists
 		return UserConverter.toUserDto(user);
 	}
 
@@ -41,11 +41,22 @@ public class UserServiceimpl implements UserService {
 	public UserDto saveUser(UserDto userDto) {
 		// TODO Auto-generated method stub
 		User user=UserConverter.toUser(userDto);
-		if(userRepository.findByEmail(user.getEmail()).size()>0)
-			return null;
-		if(userRepository.exists(user.getUserId()))
-			return null;
-		user=userRepository.save(user);
+		if(user.getUserId()==null) 
+		{
+			// in this case  a new User is created
+			if(userRepository.findByEmail(user.getEmail()).size()>0) // check if Email already exists
+				return null;
+			user=userRepository.save(user);
+		}
+		else 
+		{
+			// in this case  a  User is updated
+			User old=userRepository.findOne(user.getUserId());
+			if(!user.getEmail().equals(old.getEmail()))
+				if(userRepository.findByEmail(user.getEmail()).size()>0)
+					return null;
+			user=userRepository.save(user);	
+		}
 		return UserConverter.toUserDto(user);
 	}
 
@@ -67,7 +78,7 @@ public class UserServiceimpl implements UserService {
 		if(userId==null || userId<0)
 			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		if(!userRepository.exists(userId))
-			return false;
+			return false; // the deletion cannot be done
 		userRepository.delete(userId);
 		if(userRepository.exists(userId))
 			return false;
@@ -77,6 +88,8 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public LoginDto login(IdPw credentials) throws InvalidLoginDataException {
 		// TODO Auto-generated method stub
+		if(credentials==null)
+			throw new InvalidLoginDataException("CREDENTIAL MUST BE DEFIENED");
 		User user= userRepository.findByEmailAndPassword(credentials.getUser(), credentials.getPw());
 		if(user==null)
 			throw new InvalidLoginDataException("WRONG CREDENTIALS");
@@ -92,12 +105,12 @@ public class UserServiceimpl implements UserService {
 		User user= userRepository.findOne(userId);
 		if(user==null)
 			return null;
-		if(user.getReputation()<5)
+		if(user.getReputation()<5) //reputation cannot be higher than 5
 			newreputation= user.getReputation()+1;
 		else
 			newreputation=user.getReputation();
-		user.setReputation(newreputation);
-		user=userRepository.save(user);
+		user.setReputation(newreputation);// set new reputation
+		user=userRepository.save(user);// commit changes to the DB
 		return user.getReputation();
 	}
 
@@ -110,12 +123,12 @@ public class UserServiceimpl implements UserService {
 		User user= userRepository.findOne(userId);
 		if(user==null)
 			return null;
-		if(user.getReputation()>-5)
+		if(user.getReputation()>-5)//reputation cannot be lower than 5
 			newreputation= user.getReputation()-1;
 		else
 			newreputation=user.getReputation();
-		user.setReputation(newreputation);
-		user=userRepository.save(user);
+		user.setReputation(newreputation); // set new reputation
+		user=userRepository.save(user);// commit changes to the DB
 		return user.getReputation();
 	}
 	

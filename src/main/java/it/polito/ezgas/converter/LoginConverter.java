@@ -11,7 +11,7 @@ public class LoginConverter {
 		login.setUserId(user.getUserId());
 		login.setReputation(user.getReputation());
 		login.setUserName(user.getUserName());
-		login.setToken("token");
+		login.setToken("token"); // not used for now
 		return login;
 	}
 }
