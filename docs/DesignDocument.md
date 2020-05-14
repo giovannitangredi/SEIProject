@@ -235,20 +235,6 @@ package it.polito.ezgas.entity #DDDDDD {
         + String email
         + Integer reputation
         + Boolean admin
-
-        Integer getUserId() 
-        String getUserName() 
-        String getPassword() 
-        String getEmail() 
-        Integer getReputation() 
-        Boolean getAdmin() 
-        
-        void setUserId() 
-        void setUserName() 
-        void setPassword() 
-        void setEmail() 
-        void setReputation() 
-        void setAdmin() 
     }
 
     Class GasStation {
@@ -272,49 +258,6 @@ package it.polito.ezgas.entity #DDDDDD {
         + String reportTimestamp
         + double reportDependability
         + User user
-
-        Integer getGasStationId()
-        String getGasStationName()
-        String getGasStationAddress()
-        double getReportDependability() 
-        Integer getReportUser() 
-        String getReportTimestamp() 
-        boolean getHasDiesel() 
-        boolean getHasSuper() 
-        boolean getHasSuperPlus() 
-        boolean getHasGas() 
-        double getLat() 
-        double getLon() 
-        double getDieselPrice() 
-        double getSuperPrice() 
-        double getSuperPlusPrice() 
-        double getGasPrice() 
-        User getUser() 
-        boolean getHasMethane() 
-        double getMethanePrice() 
-        String getCarSharing() 
-
-        void setGasStationId()
-        void setGasStationName()
-        void setGasStationAddress()
-        void setReportDependability() 
-        void setReportUser() 
-        void setReportTimestamp() 
-        void setHasDiesel() 
-        void setHasSuper() 
-        void setHasSuperPlus() 
-        void setHasGas() 
-        void setLat() 
-        void setLon() 
-        void setDieselPrice() 
-        void setSuperPrice() 
-        void setSuperPlusPrice() 
-        void setGasPrice() 
-        void setUser() 
-        void setHasMethane() 
-        void setMethanePrice() 
-        void setCarSharing() 
-
     }
 
     Class PriceReport {
@@ -325,35 +268,17 @@ package it.polito.ezgas.entity #DDDDDD {
         + double superPrice
         + double superPlusPrice
         + double gasPrice
-
-	
-        double getDieselPrice() 
-        double getSuperPrice() 
-        double getSuperPlusPrice() 
-        double getGasPrice() 
-        Integer getPriceReportId() 
-
-        void setUser() 
-        void setDieselPrice() 
-        void setSuperPrice() 
-        void setSuperPlusPrice() 
-        void setGasPrice() 
-        void setPriceReportId() 
-	
     }
 }
 
 package it.polito.ezgas.repository #CCCCDD {
 
-    Class UserRepository { 
+    Interface UserRepository { 
         User findByEmailAndPassword()
+        List<User> findByEmail()
     }
 
-    Class GasStationRepository { 
-        
-    }
-
-    Class PriceReportRepository { 
+    Interface GasStationRepository { 
         
     }
 }
@@ -368,9 +293,6 @@ package it.polito.ezgas.converter #CCCCBB {
         GasStationDto toGasStationDto()
         GasStation toGasStation()
     }
-    Class PriceReportConverter { 
-        PriceReportDto toPriceReportDto()
-    }
 }
 
 package it.polito.ezgas.dto #CCDDDD {
@@ -382,21 +304,6 @@ package it.polito.ezgas.dto #CCDDDD {
         + String email
         + Integer reputation
         + Boolean admin
-
-        Integer getUserId() 
-        String getUserName() 
-        String getPassword() 
-        String getEmail() 
-        Integer getReputation() 
-        Boolean getAdmin() 
-        
-        void setUserId() 
-        void setUserName() 
-        void setPassword() 
-        void setEmail() 
-        void setReputation() 
-        void setAdmin() 
-	
     }
     Class GasStationDto { 
         + Integer gasStationId
@@ -420,54 +327,6 @@ package it.polito.ezgas.dto #CCDDDD {
         + String reportTimestamp
         + double reportDependability
         + List<PriceReportDto> priceReportDtos
-
-        double getReportDependability() 
-        Integer getGasStationId() 
-        String getGasStationName() 
-        String getGasStationAddress() 
-        boolean getHasDiesel() 
-        Boolean getHasSuper() 
-        Boolean getHasSuperPlus() 
-        Boolean getHasGas() 
-        double getLat() 
-        double getLon() 
-        double getDieselPrice() 
-        double getSuperPrice() 
-        double getSuperPlusPrice() 
-        double getGasPrice() 
-        Integer getReportUser() 
-        String getReportTimestamp() 
-        UserDto getUserDto() 
-        boolean getHasMethane() 
-        double getMethanePrice() 
-        String getCarSharing() 
-	
-        void setReportDependability() 
-        void setGasStationId() 
-        void setGasStationName() 
-        void setGasStationAddress() 
-        void setHasDiesel() 
-        void setHasSuper() 
-        void setHasSuperPlus() 
-        void setHasGas() 
-        void setLat() 
-        void setLon() 
-        void setDieselPrice() 
-        void setSuperPrice() 
-        void setSuperPlusPrice() 
-        void setGasPrice() 
-        List<PriceReportDto> getPriceReportDtos() 
-        void setPriceReportDtos() 
-        void setReportUser() 
-        void setReportTimestamp() 
-        void setUserDto() 
-        void setHasMethane() 
-        void setMethanePrice() 
-        void setHasSuper() 
-        void setHasSuperPlus() 
-        void setHasGas() 
-        void setCarSharing() 
-	
     }
 
     Class PriceListDto { 
@@ -477,20 +336,6 @@ package it.polito.ezgas.dto #CCDDDD {
         + double superPrice
         + double superPlusPrice
         + double gasPrice
-
-        Integer getPriceReportId() 
-        User getUser() 
-        double getDieselPrice() 
-        double getSuperPrice() 
-        double getSuperPlusPrice() 
-        double getGasPrice() 
-        
-        void setPriceReportId() 
-        void setUser() 
-        void setDieselPrice() 
-        void setSuperPrice() 
-        void setSuperPlusPrice() 
-        void setGasPrice() 
     }
 
     Class LoginDto { 
@@ -500,21 +345,11 @@ package it.polito.ezgas.dto #CCDDDD {
         + String email
         + Integer reputation
         + Boolean admin
+    }
 
-        
-        Integer getUserId() 
-        String getUserName() 
-        String getToken() 
-        String getEmail() 
-        Integer getReputation() 
-        Boolean getAdmin() 
-        
-        void setUserId() 
-        void setUserName() 
-        void setToken() 
-        void setEmail() 
-        void setReputation() 
-        void setAdmin() 
+    Class IdPw {
+	    + String user
+	    + String pw
     }
 
 }
@@ -579,8 +414,8 @@ package it.polito.ezgas.controller #CCDDBB {
     }
 }
 
-it.polito.ezgas.entity -- it.polito.ezgas.repository  
-it.polito.ezgas.repository -- it.polito.ezgas.converter
+it.polito.ezgas.repository -- it.polito.ezgas.entity
+it.polito.ezgas.entity -- it.polito.ezgas.converter
 it.polito.ezgas.converter -- it.polito.ezgas.dto
 it.polito.ezgas.dto -- it.polito.ezgas.service
 it.polito.ezgas.service -- it.polito.ezgas.controller

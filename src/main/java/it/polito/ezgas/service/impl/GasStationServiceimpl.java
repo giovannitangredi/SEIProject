@@ -18,9 +18,11 @@ import exception.InvalidUserException;
 import exception.PriceException;
 import it.polito.ezgas.converter.GasStationConverter;
 import it.polito.ezgas.dto.GasStationDto;
+import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.repository.GasStationRepository;
 import it.polito.ezgas.service.GasStationService;
+import it.polito.ezgas.service.UserService;
 
 /**
  * Created by softeng on 27/4/2020.
@@ -30,6 +32,9 @@ public class GasStationServiceimpl implements GasStationService {
 	//"connection" to the DB
 	@Autowired
 	GasStationRepository repository;
+	
+	@Autowired
+	UserService userService;
 	
 	
 	@Override
@@ -51,8 +56,9 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public GasStationDto saveGasStation(GasStationDto gasStationDto) throws PriceException, GPSDataException {
 		//price error handling
-		if(gasStationDto.getDieselPrice()<0 || gasStationDto.getSuperPrice()<0 ||
-		  gasStationDto.getSuperPlusPrice()<0 || gasStationDto.getMethanePrice()<0 ) {
+		if( 	(gasStationDto.getDieselPrice()<0 || gasStationDto.getSuperPrice()<0 ||
+				gasStationDto.getSuperPlusPrice()<0 || gasStationDto.getMethanePrice()<0) 
+				&& gasStationDto.getUserDto() != null ) {
 			throw new PriceException("Invalide price values!");
 		}
 		
@@ -65,8 +71,10 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		
 		//inserting new gas station or updating an existing one
-		GasStation gasStation = repository.save(GasStationConverter.toGasStation(gasStationDto));
+		GasStation gasStation = new GasStation();
 		
+		gasStation = repository.save(GasStationConverter.toGasStation(gasStationDto));
+
 		return GasStationConverter.toGasStationDto(gasStation);
 	}
 
@@ -455,10 +463,7 @@ public class GasStationServiceimpl implements GasStationService {
 		if( gasStationId<0 ) {
 			throw new InvalidGasStationException("Invalid Gas Station ID!");
 		}
-		//price error handling
-		if(dieselPrice <0 || superPrice<0 || superPlusPrice<0 || methanePrice<0 ) {
-			throw new PriceException("Invalide price values!");
-		}
+		
 		//user id error handling
 		if( userId<0 ) {
 			throw new InvalidUserException("Invalid User ID!");
@@ -468,17 +473,35 @@ public class GasStationServiceimpl implements GasStationService {
 		if( gasStationDto == null ) {
 			return;
 		}
+		
+		//price error handling 
+		if( gasStationDto.getHasDiesel() == true && dieselPrice<0 ) {
+			throw new PriceException("Invalide diesel price value!");
+		}
+		if( gasStationDto.getHasSuper() == true && superPrice<0 ) {
+			throw new PriceException("Invalide super price value!");
+		}
+		if( gasStationDto.getHasSuperPlus() == true && superPlusPrice<0 ) {
+			throw new PriceException("Invalide super plus price value!");
+		}
+		if( gasStationDto.getHasGas() == true && gasPrice<0 ) {
+			throw new PriceException("Invalide gas price value!");
+		}
+		if( gasStationDto.getHasMethane() == true && methanePrice<0 ) {
+			throw new PriceException("Invalide methane price value!");
+		}
+		
 		gasStationDto.setDieselPrice(dieselPrice);
 		gasStationDto.setSuperPrice(superPrice);
 		gasStationDto.setSuperPlusPrice(superPlusPrice);
 		gasStationDto.setGasPrice(gasPrice);
 		gasStationDto.setMethanePrice(methanePrice);
 		gasStationDto.setReportUser(userId);
-		// TODO what is dependability
 		gasStationDto.setReportTimestamp(LocalDateTime.now().toString());
-		//gasStation.setReportDependability(reportDependability);
-		UserServiceimpl user = new UserServiceimpl();
-		gasStationDto.setUserDto(user.getUserById(userId));
+		UserDto userDto = userService.getUserById(userId);
+		double dependability = 50 * (userDto.getReputation() +5)/10 + 50 * 0 /*0 is because of obsolescence*/;
+		gasStationDto.setReportDependability(dependability);
+		gasStationDto.setUserDto(userDto);
 		
 		//updating an existing one
 		repository.save(GasStationConverter.toGasStation(gasStationDto));
