@@ -24,7 +24,10 @@ public class GasStationConverter {
 		gasStationConverted.setGasPrice(gasStation.getGasPrice());
 		gasStationConverted.setMethanePrice(gasStation.getMethanePrice());
 		gasStationConverted.setReportUser(gasStation.getReportUser());
-		gasStationConverted.setUserDto(UserConverter.toUserDto(gasStation.getUser()));
+		//handling first time saving gas station without price report
+		if( gasStation.getUser() != null ) {
+			gasStationConverted.setUserDto(UserConverter.toUserDto(gasStation.getUser()));
+		}
 		gasStationConverted.setReportTimestamp(gasStation.getReportTimestamp());
 		gasStationConverted.setReportDependability(gasStation.getReportDependability());
 		
@@ -51,7 +54,10 @@ public class GasStationConverter {
 		gasStationConverted.setGasPrice(gasStationDto.getGasPrice());
 		gasStationConverted.setMethanePrice(gasStationDto.getMethanePrice());
 		gasStationConverted.setReportUser(gasStationDto.getReportUser());
-		gasStationConverted.setUser(UserConverter.toUser(gasStationDto.getUserDto()));
+		//handling first time saving gas station without price report
+		if( gasStationDto.getUserDto() != null ) {
+			gasStationConverted.setUser(UserConverter.toUser(gasStationDto.getUserDto()));
+		}
 		gasStationConverted.setReportTimestamp(gasStationDto.getReportTimestamp());
 		gasStationConverted.setReportDependability(gasStationDto.getReportDependability());
 		return gasStationConverted;
