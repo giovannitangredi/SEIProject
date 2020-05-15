@@ -229,46 +229,49 @@ left to right direction
 package it.polito.ezgas.entity #DDDDDD {
 
     Class User {
-        + Integer userId
-        + String userName
-        + String password
-        + String email
-        + Integer reputation
-        + Boolean admin
+        + userId : Integer
+        + userName : String
+        + password : String
+        + email : String 
+        + reputation : Integer 
+        + admin : Boolean 
     }
 
     Class GasStation {
-        + Integer gasStationId
-        + String gasStationName
-        + String gasStationAddress
-        + boolean hasDiesel
-        + boolean hasSuper
-        + boolean hasSuperPlus
-        + boolean hasGas
-        + boolean hasMethane
-        + String carSharing
-        + double lat
-        + double lon
-        + double dieselPrice
-        + double superPrice
-        + double superPlusPrice
-        + double gasPrice
-        + double methanePrice
-        + Integer reportUser
-        + String reportTimestamp
-        + double reportDependability
-        + User user
+        + gasStationId : Integer 
+        + gasStationName :  String 
+        + gasStationAddress :  String 
+        + hasDiesel : boolean 
+        + hasSuper : boolean 
+        + hasSuperPlus : boolean 
+        + hasGas : boolean 
+        + hasMethane : boolean 
+        + carSharing :  String 
+        + lat :  double 
+        + lon :  double 
+        + dieselPrice :  double 
+        + superPrice :  double 
+        + superPlusPrice :  double 
+        + gasPrice :  double 
+        + methanePrice :  double 
+        + reportUser : Integer 
+        + reportTimestamp :  String 
+        + reportDependability :  double 
+        + user : User
     }
 
     Class PriceReport {
         
-        + Integer priceReportId
-        + User user
-        + double dieselPrice
-        + double superPrice
-        + double superPlusPrice
-        + double gasPrice
+        + priceReportId :Integer
+        + user : User
+        + dieselPrice : double
+        + superPrice : double
+        + superPlusPrice : double
+        + gasPrice : double
     }
+
+    GasStation -- "*" User
+    User -- "*" PriceReport
 }
 
 package it.polito.ezgas.repository #CCCCDD {
@@ -285,85 +288,91 @@ package it.polito.ezgas.repository #CCCCDD {
 
 package it.polito.ezgas.converter #CCCCBB {
     Class UserConverter { 
-        UserDto toUserDto()
-        User toUser()
-        LoginDto toLoginDto()
+        toUserDto(User user)
+        toUser(UserDto user)
+    }
+    class LoginConverter {
+        toLoginDto(User user)
     }
     Class GasStationConverter { 
-        GasStationDto toGasStationDto()
-        GasStation toGasStation()
+        toGasStationDto(GasStation gasStation)
+        toGasStation(GasStationDto gasStationDto)
     }
 }
 
 package it.polito.ezgas.dto #CCDDDD {
 
     Class UserDto { 
-        + Integer userId
-        + String userName
-        + String password
-        + String email
-        + Integer reputation
-        + Boolean admin
+        + userId : Integer
+        + userName : String 
+        + password : String 
+        + email : String 
+        + admin : Boolean 
+        + reputation : Integer 
     }
     Class GasStationDto { 
-        + Integer gasStationId
-        + String gasStationName
-        + String gasStationAddress
-        + boolean hasDiesel
-        + boolean hasSuper
-        + boolean hasSuperPlus
-        + boolean hasGas
-        + boolean hasMethane
-        + String carSharing
-        + double lat
-        + double lon
-        + double dieselPrice
-        + double superPrice
-        + double superPlusPrice
-        + double gasPrice 
-        + double methanePrice
-        + Integer reportUser
-        + UserDto userDto
-        + String reportTimestamp
-        + double reportDependability
-        + List<PriceReportDto> priceReportDtos
+        + gasStationId : Integer 
+        + gasStationName : String 
+        + gasStationAddress : String 
+        + hasDiesel : boolean 
+        + hasSuper : boolean 
+        + hasSuperPlus : boolean 
+        + hasGas : boolean 
+        + hasMethane : boolean 
+        + carSharing : String 
+        + lat : double 
+        + lon : double 
+        + dieselPrice : double 
+        + superPrice : double 
+        + superPlusPrice : double 
+        + gasPrice : double 
+        + methanePrice : double 
+        + reportUser : Integer 
+        + userDto : UserDto 
+        + reportTimestamp : String 
+        + reportDependability : double 
+        + priceReportDtos : List<PriceReportDto> 
     }
 
-    Class PriceListDto { 
-        + Integer priceReportId
-        + User user
-        + double dieselPrice
-        + double superPrice
-        + double superPlusPrice
-        + double gasPrice
+    Class PriceReportDto { 
+        + priceReportId : Integer 
+        + user : User 
+        + dieselPrice : double 
+        + superPrice : double 
+        + superPlusPrice : double 
+        + gasPrice : double 
     }
 
     Class LoginDto { 
-        + Integer userId
-        + String userName
-        + String token
-        + String email
-        + Integer reputation
-        + Boolean admin
+        + userId : Integer 
+        + userName : String 
+        + token : String 
+        + email : String 
+        + admin : Boolean 
+        + reputation : Integer 
     }
 
     Class IdPw {
-	    + String user
-	    + String pw
+	    + user : String 
+	    + pw : String 
     }
+    
+    UserDto -- "*" PriceReportDto
+    GasStationDto -- "0..1" PriceReportDto
+    
 
 }
 
 package it.polito.ezgas.service #CCAABB {
 
     Interface UserService {
-        UserDto getUserById()
-        UserDto saveUser()
-        List<UserDto> getAllUsers()
-        Boolean deleteUser()
-        LoginDto login()
-        Integer increaseUserReputation()
-        Integer decreaseUserReputation()
+        getUserById()
+        saveUser()
+        getAllUsers()
+        deleteUser()
+        login()
+        increaseUserReputation()
+        decreaseUserReputation()
     }
     Class UserServiceImpl { }
 
@@ -383,6 +392,8 @@ package it.polito.ezgas.service #CCAABB {
     
     UserServiceImpl --|> UserService
     GasStationServiceImpl --|> GasStationService
+
+    GasStationServiceImpl -- UserServiceImpl
 }
 
 package it.polito.ezgas.controller #CCDDBB {
