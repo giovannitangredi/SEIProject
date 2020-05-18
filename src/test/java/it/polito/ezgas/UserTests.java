@@ -114,5 +114,14 @@ public class UserTests {
 	    instance.setAdmin(value);
 	    assertEquals(instance.getAdmin(), value);
     }
-
+	@Test
+    public void testConstructor() {
+	    User instance = new User("admin", "12345", "admin@admin.com",5);
+	    assertEquals(instance.getAdmin(), null);
+	    assertEquals(instance.getEmail(),"admin@admin.com");
+	    assertEquals(instance.getUserId(),null);
+	    assertEquals(instance.getPassword(),"12345");
+	    assertEquals(instance.getUserName(),"admin");
+	    assertEquals(instance.getReputation(),5);
+    }
 }
