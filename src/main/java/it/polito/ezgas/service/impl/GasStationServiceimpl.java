@@ -1,9 +1,13 @@
 package it.polito.ezgas.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,16 +43,51 @@ public class GasStationServiceimpl implements GasStationService {
 	
 	@Override
 	public GasStationDto getGasStationById(Integer gasStationId) throws InvalidGasStationException {
-		//id error handling
+		// id error handling
 		if( gasStationId == null || gasStationId<0 ) {
 			throw new InvalidGasStationException("Invalid Gas Station ID!");
 		}
 		
-		//retrieve gas station
+		// retrieve gas station
 		GasStation gasStation = repository.findOne(gasStationId);
 		if( gasStation == null ) {
 			return null;
 		} 
+		
+		// when the gas station has a price report
+		if( gasStation.getUser() != null ) {
+			//check if the user still exists in the DB
+			UserDto userDto = null;
+			
+			try {
+				userDto = userService.getUserById(gasStation.getUser().getUserId());
+			} catch (InvalidUserException e1) {
+				e1.printStackTrace();
+			}
+			
+			if( userDto != null ) {
+				// make the new calculus on the Price Report dependability
+				try {
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+					Date reportTimestamp;
+					reportTimestamp = sdf.parse(gasStation.getReportTimestamp());
+					Calendar calReport = Calendar.getInstance();
+					calReport.setTime(reportTimestamp);
+					Calendar calNow = Calendar.getInstance();
+					long obsolescence = 0;
+					long remainingDays = ((long) (calNow.getTimeInMillis() - calReport.getTimeInMillis())) / (24 * 60 * 60 * 1000);
+					if( remainingDays < 7 ) {
+						obsolescence = 1 - (remainingDays/7);
+					} 
+					double dependability = 50 * (userDto.getReputation()+5)/10 + 50 * obsolescence;
+					gasStation.setReportDependability(dependability);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		return GasStationConverter.toGasStationDto(gasStation);
 	}
@@ -85,6 +124,43 @@ public class GasStationServiceimpl implements GasStationService {
 		if( gasStations == null ) {
 			return new ArrayList<GasStationDto>();
 		}
+		
+		gasStations.forEach( gasStation -> {
+			// when the gas station has a price report
+			if( gasStation.getUser() != null ) {
+				//check if the user still exists in the DB
+				UserDto userDto = null;
+				
+				try {
+					userDto = userService.getUserById(gasStation.getUser().getUserId());
+				} catch (InvalidUserException e1) {
+					e1.printStackTrace();
+				}
+				
+				if( userDto != null ) {
+					// make the new calculus on the Price Report dependability
+					try {
+						
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+						Date reportTimestamp;
+						reportTimestamp = sdf.parse(gasStation.getReportTimestamp());
+						Calendar calReport = Calendar.getInstance();
+						calReport.setTime(reportTimestamp);
+						Calendar calNow = Calendar.getInstance();
+						long obsolescence = 0;
+						long remainingDays = ((long) (calNow.getTimeInMillis() - calReport.getTimeInMillis())) / (24 * 60 * 60 * 1000);
+						if( remainingDays < 7 ) {
+							obsolescence = 1 - (remainingDays/7);
+						} 
+						double dependability = 50 * (userDto.getReputation()+5)/10 + 50 * obsolescence;
+						gasStation.setReportDependability(dependability);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 		
 		return gasStations.stream()
 				.map( g -> GasStationConverter.toGasStationDto(g))	//converting each GasStation to GasStationDto
@@ -280,7 +356,7 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		
 		gasStationsFiltered = gasStationsByProximity;
-		if( gasolinetype.compareTo("null") != 0 && gasolinetype != null ) {
+		if( gasolinetype != null && gasolinetype.compareTo("null") != 0 ) {
 			//retrieving gas stations by fuel type and convert it into list of ids
 			List<Integer> gasStationsByFuelType = getGasStationsByGasolineType(gasolinetype).stream()
 															.map( g -> g.getGasStationId()).collect(Collectors.toList());
@@ -294,7 +370,7 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStationsFiltered = gasStationsByProximityAndFuelType;
 		}
 		
-		if( carsharing.compareTo("null") != 0 && carsharing != null ) {
+		if( carsharing != null && carsharing.compareTo("null") != 0 ) {
 			//retrieving gas stations by car sharing and convert it into list of ids
 			List<Integer> gasStationsByCarSharing = getGasStationByCarSharing(carsharing).stream()
 																.map( g -> g.getGasStationId()).collect(Collectors.toList());
@@ -323,7 +399,7 @@ public class GasStationServiceimpl implements GasStationService {
 		List<GasStationDto> gasStationsByFuelTypeAndCarSharing = new ArrayList<GasStationDto>();
 		List<GasStationDto> gasStationsFiltered = new ArrayList<GasStationDto>();
 		
-		if( gasolinetype.compareTo("null") != 0 && gasolinetype != null ) {
+		if( gasolinetype != null && gasolinetype.compareTo("null") != 0 ) {
 			//retrieving gas stations by fuel type and convert it into list of ids
 			gasStationsByFuelType = getGasStationsByGasolineType(gasolinetype);
 			
@@ -334,7 +410,7 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStationsFiltered = gasStationsByFuelType;
 		}
 		
-		if( carsharing.compareTo("null") != 0 && carsharing != null  ) {
+		if( carsharing != null && carsharing.compareTo("null") != 0 ) {
 			//retrieving gas stations by car sharing and convert it into list of ids
 			List<Integer> gasStationsByCarSharing = getGasStationByCarSharing(carsharing).stream()
 																.map( g -> g.getGasStationId()).collect(Collectors.toList());
@@ -360,6 +436,12 @@ public class GasStationServiceimpl implements GasStationService {
 		//gas station id error handling
 		if( gasStationId<0 ) {
 			throw new InvalidGasStationException("Invalid Gas Station ID!");
+		}
+		
+		//check if the user exists
+		UserDto userDto = userService.getUserById(userId);
+		if( userDto == null ) {
+			return;
 		}
 		
 		//user id error handling
@@ -396,8 +478,7 @@ public class GasStationServiceimpl implements GasStationService {
 		gasStationDto.setMethanePrice(methanePrice);
 		gasStationDto.setReportUser(userId);
 		gasStationDto.setReportTimestamp(LocalDateTime.now().toString());
-		UserDto userDto = userService.getUserById(userId);
-		double dependability = 50 * (userDto.getReputation() +5)/10 + 50 * 0 /*0 is because of obsolescence*/;
+		double dependability = 50 * (userDto.getReputation() +5)/10 + 50; /*0 is because of obsolescence*/;
 		gasStationDto.setReportDependability(dependability);
 		gasStationDto.setUserDto(userDto);
 		
