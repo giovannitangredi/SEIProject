@@ -194,35 +194,34 @@ public class GasStationServiceimpl implements GasStationService {
 	public List<GasStationDto> getGasStationsByGasolineType(String gasolinetype) throws InvalidGasTypeException {
 		String gasoline = gasolinetype.toLowerCase();
 		//retrieving all gas stations
-		List<GasStation> gasStations = repository.findAll();
+		List<GasStationDto> gasStations = getAllGasStations();
 		if( gasStations == null ) {
 			return new ArrayList<GasStationDto>();
 		}
 		
-		Stream<GasStation> filteredGasStations;
+		Stream<GasStationDto> filteredGasStations;
 		
 		if( gasoline.compareTo("diesel") == 0 ) {
 			filteredGasStations = gasStations.stream().filter(g -> g.getHasDiesel())
-											.sorted(Comparator.comparingDouble(GasStation::getDieselPrice));
+											.sorted(Comparator.comparingDouble(GasStationDto::getDieselPrice));
 		} else if( gasoline.compareTo("super") == 0 ) {
 			filteredGasStations = gasStations.stream().filter(g -> g.getHasSuper())
-											.sorted(Comparator.comparingDouble(GasStation::getSuperPrice));
+											.sorted(Comparator.comparingDouble(GasStationDto::getSuperPrice));
 		} else if( gasoline.compareTo("superplus") == 0 ) {
 			filteredGasStations = gasStations.stream().filter(g -> g.getHasSuperPlus())
-											.sorted(Comparator.comparingDouble(GasStation::getSuperPlusPrice));
+											.sorted(Comparator.comparingDouble(GasStationDto::getSuperPlusPrice));
 		} else if( gasoline.compareTo("gas") == 0 ) {
 			filteredGasStations = gasStations.stream().filter(g -> g.getHasSuperPlus())
-											.sorted(Comparator.comparingDouble(GasStation::getGasPrice));
+											.sorted(Comparator.comparingDouble(GasStationDto::getGasPrice));
 		} else if( gasoline.compareTo("methane") == 0 ) {
 			filteredGasStations = gasStations.stream().filter(g -> g.getHasMethane())
-											.sorted(Comparator.comparingDouble(GasStation::getMethanePrice));
+											.sorted(Comparator.comparingDouble(GasStationDto::getMethanePrice));
 		} else {
 			//gasoline type error handling
 			throw new InvalidGasTypeException(gasolinetype + "is an invalid gas type!");
 		}
 		
 		return filteredGasStations
-				.map( g -> GasStationConverter.toGasStationDto(g))	//converting each GasStation to GasStationDto
 				.collect(Collectors.toList());		
 	}
 
@@ -238,7 +237,7 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		
 		//retrieving all gas stations
-		List<GasStation> gasStations = repository.findAll();
+		List<GasStationDto> gasStations = getAllGasStations();
 		if( gasStations == null ) {
 			return new ArrayList<GasStationDto>();
 		}
@@ -329,7 +328,7 @@ public class GasStationServiceimpl implements GasStationService {
 	
 		
 		//filter gas station for the coordinates inside the limits of 1km
-		Stream<GasStation> filteredGasStations = gasStations.stream()
+		Stream<GasStationDto> filteredGasStations = gasStations.stream()
 				.filter(g -> g.getLat()<GPSArea[0] && g.getLat()>GPSArea[1] &&
 							 g.getLon()<GPSArea[2] && g.getLon()>GPSArea[3]);
 		if( filteredGasStations == null ) {
@@ -337,7 +336,6 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		
 		return filteredGasStations
-				.map( g -> GasStationConverter.toGasStationDto(g))	//converting each GasStation to GasStationDto
 				.collect(Collectors.toList());
 	}
 
@@ -490,12 +488,12 @@ public class GasStationServiceimpl implements GasStationService {
 	public List<GasStationDto> getGasStationByCarSharing(String carSharing) {
 		
 		//retrieving all gas stations
-		List<GasStation> gasStations = repository.findAll();
+		List<GasStationDto> gasStations = getAllGasStations();
 		if( gasStations == null ) {
 			return new ArrayList<GasStationDto>();
 		}
 		//filtering gas stations by car sharing
-		Stream<GasStation> filteredGasStations = 
+		Stream<GasStationDto> filteredGasStations = 
 				gasStations.stream()
 				.filter( g -> g.getCarSharing().compareTo(carSharing) == 0);
 		if( filteredGasStations == null ) {
@@ -503,7 +501,6 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		
 		return filteredGasStations
-				.map( g -> GasStationConverter.toGasStationDto(g))	//converting each GasStation to GasStationDto
 				.collect(Collectors.toList());
 	}
 	
