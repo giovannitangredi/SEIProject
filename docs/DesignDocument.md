@@ -270,8 +270,8 @@ package it.polito.ezgas.entity #DDDDDD {
         + gasPrice : double
     }
 
-    GasStation -- "*" User
-    User -- "*" PriceReport
+    GasStation --"0..1" User
+
 }
 
 package it.polito.ezgas.repository #CCCCDD {
@@ -288,16 +288,18 @@ package it.polito.ezgas.repository #CCCCDD {
 
 package it.polito.ezgas.converter #CCCCBB {
     Class UserConverter { 
-        toUserDto(User user)
-        toUser(UserDto user)
+        toUserDto()
+        toUser()
     }
     class LoginConverter {
-        toLoginDto(User user)
+        toLoginDto()
     }
     Class GasStationConverter { 
-        toGasStationDto(GasStation gasStation)
-        toGasStation(GasStationDto gasStationDto)
+        toGasStationDto()
+        toGasStation()
     }
+
+    GasStationConverter <-- UserConverter
 }
 
 package it.polito.ezgas.dto #CCDDDD {
@@ -357,24 +359,21 @@ package it.polito.ezgas.dto #CCDDDD {
 	    + pw : String 
     }
     
-    UserDto -- "*" PriceReportDto
-    GasStationDto -- "0..1" PriceReportDto
-    
-
+    GasStationDto -- "0..1" UserDto
 }
 
 package it.polito.ezgas.service #CCAABB {
 
     Interface UserService {
-        getUserById()
-        saveUser()
-        getAllUsers()
-        deleteUser()
-        login()
-        increaseUserReputation()
-        decreaseUserReputation()
+        UserDto getUserById()
+        UserDto saveUser()
+        List<UserDto> getAllUsers()
+        Boolean deleteUser()
+        LoginDto login()
+        Integer increaseUserReputation()
+        Integer decreaseUserReputation()
     }
-    Class UserServiceImpl { }
+    
 
     Interface GasStationService {
         GasStationDto getGasStationById()
@@ -387,13 +386,16 @@ package it.polito.ezgas.service #CCAABB {
         List<GasStationDto> getGasStationsWithoutCoordinates()
         void setReport()
         List<GasStationDto> getGasStationByCarSharing()
+        Integer evaluatePrices()
     }
+}
+
+package it.polito.ezgas.service.impl #CCAABB{
+    Class UserServiceImpl { }
     Class GasStationServiceImpl { }
-    
+
     UserServiceImpl --|> UserService
     GasStationServiceImpl --|> GasStationService
-
-    GasStationServiceImpl -- UserServiceImpl
 }
 
 package it.polito.ezgas.controller #CCDDBB {
@@ -405,14 +407,6 @@ package it.polito.ezgas.controller #CCDDBB {
         LoginDto login()
         Integer increaseUserReputation()
         Integer decreaseUserReputation()
-
-        UserDto getUserById()
-        List<UserDto> getAllUsers()
-        UserDto saveUser()
-        Boolean deleteUser()
-        Integer increaseUserReputation()
-        Integer decreaseUserReputation()
-        LoginDto login()
     }
     Class GasStationController { 
         GasStationDto getGasStationById()
@@ -423,13 +417,41 @@ package it.polito.ezgas.controller #CCDDBB {
         void setGasStationReport()
         void saveGasStation()
     }
+    Class HomeController {
+        String admin()
+        String index()
+        String map()
+        String login()
+        String update()
+        String signup()
+    }
 }
 
-it.polito.ezgas.repository -- it.polito.ezgas.entity
-it.polito.ezgas.entity -- it.polito.ezgas.converter
-it.polito.ezgas.converter -- it.polito.ezgas.dto
-it.polito.ezgas.dto -- it.polito.ezgas.service
-it.polito.ezgas.service -- it.polito.ezgas.controller
+GasStationRepository -- GasStation
+UserRepository -- User
+
+GasStationConverter <--> GasStation
+GasStationConverter <--> GasStationDto
+UserConverter <--> User
+UserConverter <--> UserDto
+LoginConverter <-- User
+LoginConverter --> LoginDto
+
+GasStationServiceImpl -- GasStationRepository
+GasStationServiceImpl <-- GasStationConverter
+GasStationServiceImpl <-- GasStation
+GasStationServiceImpl <-- GasStationDto
+GasStationServiceImpl -- UserService
+UserServiceImpl -- UserRepository
+UserServiceImpl <-- UserConverter
+UserServiceImpl <-- LoginConverter
+UserServiceImpl <-- User
+UserServiceImpl <-- UserDto
+UserServiceImpl <-- LoginDto
+UserServiceImpl <-- IdPw
+
+UserController <-- UserService
+GasStationController <-- GasStationService
 
 @enduml
 ```
