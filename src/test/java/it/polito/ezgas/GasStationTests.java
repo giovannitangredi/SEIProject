@@ -353,5 +353,33 @@ public class GasStationTests {
 	    instance.setCarSharing(value);
 	    assertEquals(instance.getCarSharing(), value);
 	}
+	@Test
+    public void testConstructor() {
+	    GasStation instance = new GasStation("test", "testAddress", 
+	    		true, true, true, true, 
+	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		1.6, 2.24, 3.14, 1.45, 
+	    		22, "testTime", 0.0);
+	    assertEquals(instance.getCarSharing(), "testCar");
+	    assertEquals(instance.getUser(),null);
+	    assertEquals(instance.getLat(),30.0);
+	    assertEquals(instance.getLon(),20.0);
+	    assertEquals(instance.getHasDiesel(),true);
+	    assertEquals(instance.getHasGas(),true);
+	    assertEquals(instance.getHasMethane(),true);
+	    assertEquals(instance.getHasSuper(),true);
+	    assertEquals(instance.getHasSuperPlus(),true);
+	    assertEquals(instance.getReportTimestamp(),"testTime");
+	    assertEquals(instance.getReportDependability(),0);
+	    assertEquals(instance.getGasStationId(),null);
+	    assertEquals(instance.getGasStationName(),"test");
+	    assertEquals(instance.getGasStationAddress(),"testAddress");
+	    assertEquals(instance.getReportUser(),22);
+	    assertEquals(instance.getDieselPrice(),1.6);
+	    assertEquals(instance.getSuperPrice(),1.6);
+	    assertEquals(instance.getSuperPlusPrice(),2.24);
+	    assertEquals(instance.getGasPrice(),3.14);
+	    assertEquals(instance.getMethanePrice(),1.45);
+    }
 
 }
