@@ -386,7 +386,6 @@ package it.polito.ezgas.service #CCAABB {
         List<GasStationDto> getGasStationsWithoutCoordinates()
         void setReport()
         List<GasStationDto> getGasStationByCarSharing()
-        Integer evaluatePrices()
     }
 }
 
@@ -505,9 +504,6 @@ actor UserActor
 
     GasStationController -> GasStationService: setReport
     activate GasStationService
-
-    GasStationService -> GasStation: fuelPricesUpdate 
-
 @enduml
 
 ```
@@ -519,7 +515,7 @@ actor UserActor
     UserActor -> GasStationController: searchGasStationByProximity
     activate GasStationController
 
-    GasStationController -> GasStationService: searchGasStationByProximity
+    GasStationController -> GasStationService: getGasStationsWithCoordinates
     activate GasStationService
 
     GasStationService --> GasStationController: showGasStations
@@ -541,38 +537,19 @@ actor UserActor
     GasStationController -> GasStationService: getGasStationById
     activate GasStationService
 
-    GasStationService -> GasStation: getPriceList
-    activate GasStation
-
-    GasStation --> GasStationService: showPriceList
-    deactivate GasStation
-
-    GasStationService --> GasStationController: showGasStations
+    GasStationService --> GasStationController: showGasStation
     deactivate GasStationController
 
-    GasStationController --> UserActor: showGasStations
+    GasStationController --> UserActor: showGasStation
     deactivate GasStationService
 
-    UserActor -> GasStationController: evaluatePrices('Correct')
-    activate GasStationController
+    UserActor -> UserController: increaseUserReputation
+    activate UserController
 
-    GasStationController -> GasStationService: evaluatePrices('Correct')
-    activate GasStationService
-
-    GasStationService -> GasStation: evaluatePrices('Correct')
-    activate GasStation
-
-    GasStation -> UserService: getUserById
+    UserController -> UserService: increaseUserReputation
     activate UserService
 
-    UserService --> GasStation : getUserById
-    deactivate UserService
-
-    GasStation -> UserService: increaseUserReputation
-    activate UserService
-
-    UserService -> User: setTrustLevel(+1)
-    
+    UserService -> User: setTrustLevel(+1)  
 @enduml
 
 ```
