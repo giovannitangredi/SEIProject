@@ -363,7 +363,7 @@ public class GasStationServiceimpl implements GasStationService {
 			}
 			//intersection between gas stations by proximity and gas stations by fuel type
 			gasStationsByProximityAndFuelType = 
-					gasStationsByProximity.stream()
+					gasStationsFiltered.stream()
 					.filter( g -> gasStationsByFuelType.contains(g.getGasStationId())).collect(Collectors.toList());
 			gasStationsFiltered = gasStationsByProximityAndFuelType;
 		}
@@ -378,7 +378,7 @@ public class GasStationServiceimpl implements GasStationService {
 			
 			//intersection between gas stations by proximity and gas stations by fuel type and by car sharing
 			gasStationsByProximityAndFuelTypeAndCarSharing = 
-					gasStationsByProximityAndFuelType.stream()
+					gasStationsFiltered.stream()
 					.filter( g -> gasStationsByCarSharing.contains(g.getGasStationId())).collect(Collectors.toList());
 			gasStationsFiltered = gasStationsByProximityAndFuelTypeAndCarSharing;
 		}
@@ -393,36 +393,44 @@ public class GasStationServiceimpl implements GasStationService {
 			throws InvalidGasTypeException {
 		//retrieving gas stations by proximity
 		//exceptions not handled because they should be launched by the called methods
+		List<GasStationDto> gasStations = getAllGasStations();
 		List<GasStationDto> gasStationsByFuelType = new ArrayList<GasStationDto>(); 
 		List<GasStationDto> gasStationsByFuelTypeAndCarSharing = new ArrayList<GasStationDto>();
 		List<GasStationDto> gasStationsFiltered = new ArrayList<GasStationDto>();
 		
+		if( gasStations == null ) {
+			return new ArrayList<GasStationDto>(); 
+		}
+		gasStationsFiltered = gasStations;
+		
 		if( gasolinetype != null && gasolinetype.compareTo("null") != 0 ) {
 			//retrieving gas stations by fuel type and convert it into list of ids
-			gasStationsByFuelType = getGasStationsByGasolineType(gasolinetype);
-			
-			if( gasStationsByFuelType.isEmpty() ) {
+			List<Integer>gasStationsByFuelTypeIds = getGasStationsByGasolineType(gasolinetype).stream()
+															.map( g -> g.getGasStationId()).collect(Collectors.toList());
+			if( gasStationsByFuelTypeIds.isEmpty() ) {
 				return new ArrayList<GasStationDto>(); 
 			}
-			
+			//intersection between gas stations by proximity and gas stations by fuel type
+			gasStationsByFuelType = 
+					gasStationsFiltered.stream()
+					.filter( g -> gasStationsByFuelTypeIds.contains(g.getGasStationId())).collect(Collectors.toList());
 			gasStationsFiltered = gasStationsByFuelType;
 		}
 		
 		if( carsharing != null && carsharing.compareTo("null") != 0 ) {
 			//retrieving gas stations by car sharing and convert it into list of ids
-			List<Integer> gasStationsByCarSharing = getGasStationByCarSharing(carsharing).stream()
+			List<Integer> gasStationsByCarSharingIds = getGasStationByCarSharing(carsharing).stream()
 																.map( g -> g.getGasStationId()).collect(Collectors.toList());
-			if( gasStationsByCarSharing.isEmpty() ) {
+			if( gasStationsByCarSharingIds.isEmpty() ) {
 				return new ArrayList<GasStationDto>();
 			}
 			
 			//intersection between gas stations by proximity and gas stations by fuel type and by car sharing
 			gasStationsByFuelTypeAndCarSharing = 
-					gasStationsByFuelType.stream()
-					.filter( g -> gasStationsByCarSharing.contains(g.getGasStationId())).collect(Collectors.toList());
+					gasStationsFiltered.stream()
+					.filter( g -> gasStationsByCarSharingIds.contains(g.getGasStationId())).collect(Collectors.toList());
 			gasStationsFiltered = gasStationsByFuelTypeAndCarSharing;
 		}
-		
 		
 		return gasStationsFiltered;
 	}
