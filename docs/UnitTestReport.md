@@ -1,10 +1,10 @@
 # Unit Testing Documentation
 
-Authors:
+Authors:Enrico Clemente, Luca Francescato, Giovanni Tangredi, Seyedali Mousavi
 
-Date:
+Date:19/05/2020
 
-Version:
+Version: 2
 
 # Contents
 
@@ -914,11 +914,8 @@ Version:
 
     <Add here the screenshot report of the statement and branch coverage obtained using
     the Eclemma tool. >
-
-    ![Gas Station Coverage](GasStationCoverage.jpg?raw=true)
-    ![User Coverage](UserCoverage.jpg?raw=true)
-
-
+![Gas Station Coverage](GasStationCoverage.jpg)
+![User Coverage](UserCoverage.jpg)
 ### Loop coverage analysis
 
     <Identify significant loops in the units and reports the test cases
