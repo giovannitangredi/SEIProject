@@ -7,8 +7,6 @@ Date:19/05/2020
 
 Version: 2
 
-
-
 # Contents
 
 - [Black Box Unit Tests](#black-box-unit-tests)
@@ -838,6 +836,7 @@ Version: 2
 | null                   | Valid           | T1(null) -> null             | it.polito.ezgas.GasStationTests.testSetCarSharing |
 | sequence of characters | Valid           | T2("Enjoy") -> "Enjoy"       | it.polito.ezgas.GasStationTests.testSetCarSharing |
 | empty string           | Valid           | T3("") -> ""                 | it.polito.ezgas.GasStationTests.testSetCarSharing |
+
 
 
 
