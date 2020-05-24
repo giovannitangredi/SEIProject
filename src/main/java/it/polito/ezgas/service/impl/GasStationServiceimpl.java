@@ -83,7 +83,6 @@ public class GasStationServiceimpl implements GasStationService {
 					double dependability = 50 * (userDto.getReputation()+5)/10 + 50 * obsolescence;
 					gasStation.setReportDependability(dependability);
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -94,12 +93,7 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public GasStationDto saveGasStation(GasStationDto gasStationDto) throws PriceException, GPSDataException {
-		//price error handling
-		if( 	(gasStationDto.getDieselPrice()<0 || gasStationDto.getSuperPrice()<0 ||
-				gasStationDto.getSuperPlusPrice()<0 || gasStationDto.getMethanePrice()<0) 
-				&& gasStationDto.getUserDto() != null ) {
-			throw new PriceException("Invalide price values!");
-		}
+		//price error has not to be handled
 		
 		//GPS error handling
 		if(gasStationDto.getLat()>90 || gasStationDto.getLat()<-90) {
@@ -155,7 +149,6 @@ public class GasStationServiceimpl implements GasStationService {
 						double dependability = 50 * (userDto.getReputation()+5)/10 + 50 * obsolescence;
 						gasStation.setReportDependability(dependability);
 					} catch (ParseException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
