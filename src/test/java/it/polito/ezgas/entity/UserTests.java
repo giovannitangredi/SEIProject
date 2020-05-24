@@ -1,4 +1,4 @@
-package it.polito.ezgas;
+package it.polito.ezgas.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
