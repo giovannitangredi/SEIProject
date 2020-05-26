@@ -1,10 +1,8 @@
 package it.polito.ezgas;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ public class GasStationServiceTests {
 	@MockBean
 	GasStationRepository gsRepo;
 
-	@Autowired
+	@MockBean
 	UserServiceimpl uService;
 
 	GasStation gs;
@@ -73,7 +71,7 @@ public class GasStationServiceTests {
 	ArrayList<GasStation> lst;
 
 	@Before
-	public void setup() {
+	public void setup() throws InvalidUserException {
 
 		gasStationId = 2;
 		gasStationName = "GasStation 1";
@@ -118,25 +116,25 @@ public class GasStationServiceTests {
 		lst.add(gs);
 		lst.add(gs2);
 
-		gs3 = new GasStation(gasStationName, gasStationAddress, false, false, false, false, false, "Free", 76.26462,
+		gs3 = new GasStation(gasStationName, gasStationAddress, true, true, true, true, true, "Free", 76.26462,
 				45.04123, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, reportUser, reportTimestamp,
 				reportDependability);
 		gs3.setGasStationId(10);
+		gs3.setUser(UserConverter.toUser(userDto));
 
 		lst.add(gs3);
 
 		when(gsRepo.findOne(gasStationId)).thenReturn(gs);
+		when(gsRepo.findOne(gs3.getGasStationId())).thenReturn(gs3);
 		when(gsRepo.save(any(GasStation.class))).thenReturn(gs);
 		when(gsRepo.findAll()).thenReturn(lst);
 		doNothing().when(gsRepo).delete(gs);
+		when(uService.getUserById(userDto.getUserId())).thenReturn(userDto);
 
 	}
 
 	@Test
 	public void getGasStationById() throws InvalidUserException, InvalidGasStationException {
-		assertThrows(InvalidUserException.class, () -> {
-			uService.getUserById(-1);
-		});
 		assertThrows(InvalidGasStationException.class, () -> {
 			gsService.getGasStationById(-1);
 		});
@@ -144,14 +142,15 @@ public class GasStationServiceTests {
 			gsService.getGasStationById(null);
 		});
 
-		GasStationDto gasStationDto = gsService.getGasStationById(2);
-		assertTrue(gasStationDto.getGasStationId() == 2);
+		GasStationDto gasStationDto = gsService.getGasStationById(gasStationId);
+		assertTrue(gasStationDto.getGasStationId() == gasStationId);
 
-		when(gsService.getGasStationById(4)).thenReturn(null);
-
+		when(gsRepo.findOne(gasStationId)).thenReturn(null);
 		gs.setUser(new User());
 		gs.setReportTimestamp("2020-05-2044:42:31.434");
-	    gasStationDto = gsService.getGasStationById(2);
+	    
+		gasStationDto = gsService.getGasStationById(2);
+	    assertNull(gasStationDto);
 	}
 
 	@Test
@@ -229,17 +228,17 @@ public class GasStationServiceTests {
 	@Test
 	public void getGasStationsByGasolineTypeTest() throws InvalidGasTypeException {
 		List<GasStationDto> lstGasoline = gsService.getGasStationsByGasolineType("diesel");
-		assertEquals(lstGasoline.size(), 1);
+		assertEquals(lstGasoline.size(), 2);
 		assertEquals(lstGasoline.get(0).getGasStationId(), GasStationConverter.toGasStationDto(gs).getGasStationId());
 
 		lstGasoline = gsService.getGasStationsByGasolineType("super");
-		assertEquals(lstGasoline.size(), 1);
+		assertEquals(lstGasoline.size(), 2);
 		lstGasoline = gsService.getGasStationsByGasolineType("superplus");
-		assertEquals(lstGasoline.size(), 1);
+		assertEquals(lstGasoline.size(), 2);
 		lstGasoline = gsService.getGasStationsByGasolineType("gas");
-		assertEquals(lstGasoline.size(), 1);
+		assertEquals(lstGasoline.size(), 2);
 		lstGasoline = gsService.getGasStationsByGasolineType("methane");
-		assertEquals(lstGasoline.size(), 0);
+		assertEquals(lstGasoline.size(), 1);
 
 		assertThrows(InvalidGasTypeException.class, () -> {
 			gsService.getGasStationsByGasolineType("ddd");
@@ -337,9 +336,9 @@ public class GasStationServiceTests {
 		lstGasStations = gsService.getGasStationsWithoutCoordinates("diesel", "Ennjoy");
 		assertTrue(lstGasStations.size() == 0);
 		lstGasStations = gsService.getGasStationsWithoutCoordinates("diesel", null);
-		assertTrue(lstGasStations.size() == 1);
+		assertTrue(lstGasStations.size() == 2);
 		lstGasStations = gsService.getGasStationsWithoutCoordinates("diesel", "null");
-		assertTrue(lstGasStations.size() == 1);
+		assertTrue(lstGasStations.size() == 2);
 
 		when(gsRepo.findAll()).thenReturn(null);
 		lstGasStations = gsService.getGasStationsWithoutCoordinates("diesel", "Enjoy");
@@ -348,15 +347,38 @@ public class GasStationServiceTests {
 
 	@Test
 	public void setReportTest() throws InvalidGasStationException, PriceException, InvalidUserException {
+		
+		//Invalid Gas Station Exception Test
 		assertThrows(InvalidGasStationException.class, () -> {
 			gsService.setReport(-1, 1.2, 1.3, 1.4, 1.5, 1.6, userDto.getUserId());
 		});
+		
+		//Invalid User Exception Test
 		assertThrows(InvalidUserException.class, () -> {
-			gsService.setReport(gasStationId, 1.2, 1.3, 1.4, 1.5, 1.6, -1);
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, 1.6, -1);
 		});
+		
+		// Price Exception Tests
 		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gasStationId, -1.2, 1.3, 1.4, 1.5, 1.6, userDto.getUserId());
+			gsService.setReport(gs3.getGasStationId(), -1.2, 1.3, 1.4, 1.5, 1.6, userDto.getUserId());
 		});
+		
+		assertThrows(PriceException.class, () -> {
+			gsService.setReport(gs3.getGasStationId(), 1.2, -1.3, 1.4, 1.5, 1.6, userDto.getUserId());
+		});
+		
+		assertThrows(PriceException.class, () -> {
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, -1.4, 1.5, 1.6, userDto.getUserId());
+		});
+		
+		assertThrows(PriceException.class, () -> {
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, -1.5, 1.6, userDto.getUserId());
+		});
+		
+		assertThrows(PriceException.class, () -> {
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, -1.6, userDto.getUserId());
+		});
+		
 
 		gsService.setReport(gasStationId, 1.6, 1.5, 1.7, 1.4, 1.1, userDto.getUserId());
 		GasStationDto result = gsService.getGasStationById(gasStationId);
@@ -364,41 +386,9 @@ public class GasStationServiceTests {
 		assertEquals(result.getSuperPrice(), 1.7, 1);
 		assertEquals(result.getGasPrice(), 1.4, 1);
 		assertEquals(result.getMethanePrice(), 1.1, 1);
-
+				
 		when(gsRepo.findOne(gasStationId)).thenReturn(null);
 		gsService.setReport(gasStationId, 1.6, 1.5, 1.7, 1.4, 1.1, userDto.getUserId());
-
-		gsService.setReport(gs3.getGasStationId(), 1.6, 1.5, 1.7, 1.4, 1.1, userDto.getUserId());
-		
-		when(gsRepo.findOne(gs3.getGasStationId())).thenReturn(gs3);
-		
-		gs3.setHasDiesel(true);
-		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), -1.2, 1.3, 1.4, 1.5, 1.6, userDto.getUserId());
-		});
-		gs3.setHasSuper(true);
-		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), 1.2, -1.3, 1.4, 1.5, 1.6, userDto.getUserId());
-		});
-		gs3.setHasSuperPlus(true);
-		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, -1.4, 1.5, 1.6, userDto.getUserId());
-		});
-		
-		gs3.setHasSuperPlus(false);
-		gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, -1.4, 1.5, 1.6, userDto.getUserId());
-		
-//		gs3.setHasGas(true);
-//		assertThrows(PriceException.class, () -> {
-//			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, -1.5, 1.6, userDto.getUserId());
-//		});
-		
-		gs3.setHasMethane(true);
-		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, -1.6, userDto.getUserId());
-		});
-		gs3.setHasMethane(false);
-		gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, -1.6, userDto.getUserId());
 	}
 
 	@Test
