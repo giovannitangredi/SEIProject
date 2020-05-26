@@ -270,6 +270,18 @@ public class GasStationServiceTests {
 		assertTrue(lstGasStations.size() == 1);
 		assertEquals(lstGasStations.get(0).getLat(), lat, 2);
 		assertEquals(lstGasStations.get(0).getLon(), lon, 2);
+		
+		lstGasStations = gsService.getGasStationsByProximity(2.039188, 7.642538);
+		assertTrue(lstGasStations.size() == 0);
+		lstGasStations = gsService.getGasStationsByProximity(16.039188, 7.642538);
+		assertTrue(lstGasStations.size() == 0);
+		lstGasStations = gsService.getGasStationsByProximity(31.039188, 7.642538);
+		assertTrue(lstGasStations.size() == 0);
+		lstGasStations = gsService.getGasStationsByProximity(61.039188, 7.642538);
+		assertTrue(lstGasStations.size() == 0);
+		lstGasStations = gsService.getGasStationsByProximity(76.039188, 7.642538);
+		assertTrue(lstGasStations.size() == 0);
+		
 
 		when(gsRepo.findAll()).thenReturn(null);
 		lstGasStations = gsService.getGasStationsByProximity(45.039188, 7.642538);
