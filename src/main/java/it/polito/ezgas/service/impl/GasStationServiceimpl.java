@@ -437,15 +437,15 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new InvalidGasStationException("Invalid Gas Station ID!");
 		}
 		
+		//user id error handling
+		if( userId<0 ) {
+			throw new InvalidUserException("Invalid User ID!");
+		}
+		
 		//check if the user exists
 		UserDto userDto = userService.getUserById(userId);
 		if( userDto == null ) {
 			return;
-		}
-		
-		//user id error handling
-		if( userId<0 ) {
-			throw new InvalidUserException("Invalid User ID!");
 		}
 		
 		GasStationDto gasStationDto = getGasStationById(gasStationId);
@@ -490,7 +490,7 @@ public class GasStationServiceimpl implements GasStationService {
 		
 		//retrieving all gas stations
 		List<GasStationDto> gasStations = getAllGasStations();
-		if( gasStations == null ) {
+		if( gasStations.size() == 0 ) {
 			return new ArrayList<GasStationDto>();
 		}
 		//filtering gas stations by car sharing
