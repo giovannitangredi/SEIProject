@@ -1,13 +1,10 @@
 # CR - Change Request Poll
 
-Authors:
+Authors:Enrico Clemente, Luca Francescato, Giovanni Tangredi, Seyedali Mousavi
 
-Date:
+Date:26/05/2020
 
-Version:
-
-
-
+Version: 1
 
 # CR priority and effort estimate
 
@@ -23,11 +20,11 @@ update of documents. Consider only effort on the back end (changes to all packag
 
 |   CR          | Priority (1 lowest 5 highest)       |          Effort (person hours) |   
 | ----------- | ------------------------------- | ---------------------------- | 
-| CR1   | | |          
-| CR2   | | | 
-| CR3   | | | 
-| CR4   | | | 
-| CR5   | | | 
-| CR6   | | | 
-| CR7   | | | 
-| CR8   | | | 
+| CR1   | 5 | 50 |          
+| CR2   | 4 | 40 | 
+| CR3   | 2 | 30 | 
+| CR4   | 5 | 15 | 
+| CR5   | 2 | 70 | 
+| CR6   | 3 | 80 | 
+| CR7   | 5 | 40 | 
+
