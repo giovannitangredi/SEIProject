@@ -67,12 +67,8 @@ frontend-->backend
      
 # Integration approach
 
-    <Write here the integration sequence you adopted, in general terms (top down, bottom up, mixed) and as sequence
-    (ex: step1: class A, step 2: class A+B, step 3: class A+B+C, etc)> 
-    <The last integration step corresponds to API testing at level of Service package>
-    <Tests at level of Controller package will be done later>
 
-It was chose a mixed integration approach, the Service classes was tested first mocking the Repositories than after the repositories where fully tested we continued with a full bottom-up approach.
+It was chose a mixed integration approach, the Service classes was tested first mocking the Repositories and other functions needed than after the repositories where fully tested we continued with a full bottom-up approach.
 ##Sequence
 |Step#|Classes|
 |-----|-------|
@@ -86,9 +82,6 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 
 #  Tests
-
-   <define below a table for each integration step. For each integration step report the group of classes under test, and the names of
-     JUnit test cases applied to them>
 
 ## Step 1
 | Classes  | JUnit test cases |
@@ -109,7 +102,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 ## Step 3
 | Classes  | JUnit test cases |
 |--|--|
-|UserServiceimpl|MockUserServiceimplTests|
+|UserServiceimpl|UserServiceimplTests |
 
 ## Step 4
 | Classes  | JUnit test cases |
@@ -127,8 +120,8 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 | Classes  | JUnit test cases |
 |--|--|
-|UserServiceimpl|UserServiceimplTests|
-|GasStationServiceimpl|GasStationServiceimplTests|
+|UserServiceimpl|UserServiceimplRealTests |
+|GasStationServiceimpl|GasStationServiceRealTests|
 
 
 
@@ -336,47 +329,42 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 # Coverage of Scenarios and FR
 
+##API Test Classes used
+Class GasStationServiceRealTest has the following tests: getGasStationsWithCoordinatesTest, getGasStationsByProximityTest, getGasStationByCarSharingTest, getGasStationsByGasolineTypeTest, getGasStationsWithoutCoordinatesTest , saveGasStationTest, deleteGasStationTest ,setReportTest,getAllGasStationsTest
 
-<Report in the following table the coverage of  scenarios (from official requirements and from above) vs FR. 
-Report also for each of the scenarios the (one or more) API JUnit tests that cover it. >
-
-
-Class GasStationServiceRealTest has the following test: getGasStationsWithCoordinatesTest, getGasStationsByProximityTest, getGasStationByCarSharingTest, getGasStationsByGasolineTypeTest, getGasStationsWithoutCoordinatesTest , saveGasStationTest, deleteGasStationTest ,setReportTest
-
+Class UserServiceimplRealTests has the following tests: testSaveUser, testDeleteUser, testIncreaseUserReputation,  testDecreaseUserReputation
 
 | Scenario ID | Functional Requirements covered | JUnit  Test(s) | 
 | ----------- | ------------------------------- | ----------- | 
-|  1.1        | FR1.1                           |   testSaveUser          |             
-|  1.2        | FR1.1                           |            |             
-|  2.1        | FR1.1                           |   testSaveUser         |             
-|  2.2        | FR1.1                           |             |             
-|  3.1        | FR1.2                           |   testDeleteUser          |             
-|  4.1        | FR3.1                           | saveGasStationTest         |     
-|  4.2        | FR3.1                           |          |  
-|  5.1        | FR3.1                           |          |  
-|  5.2        | FR3.1                           |          |  
-|  6.1        | FR3.2                           | deleteGasStationTest       |    
-|  7.1        | FR5.1                           | setReportTest        |  
-|  7.2        | FR5.1                           |             |  
-|  8.1        | FR4,FR3.3                       | getGasStationsWithCoordinatesTest,getGasStationsByProximityTest,getGasStationByCarSharingTest,getGasStationsByGasolineTypeTest |  
-|  8.2        | FR4                             | getGasStationsWithoutCoordinatesTest,getGasStationsByProximityTest,getGasStationByCarSharingTest,getGasStationsByGasolineTypeTest |
-|  9.1        | FR5.2                           |             |
-|  10.1       | FR5.3                           |             | 
-|  10.2       | FR5.3                           |             |         
+|  UC1.1        | FR1.1                           |   testSaveUser          |             
+|  UC1.2        | FR1.1                           |   testSaveUser         |             
+|  UC2.1        | FR1.1                           |   testSaveUser         |             
+|  UC2.2        | FR1.1                           |   testSaveUser          |             
+|  UC3.1        | FR1.2                           |   testDeleteUser          |             
+|  UC4.1        | FR3.1                           | saveGasStationTest         |     
+|  UC4.2        | FR3.1                           | saveGasStationTest         |  
+|  UC5.1        | FR3.1                           | saveGasStationTest         |  
+|  UC5.2        | FR3.1                           | saveGasStationTest         |  
+|  UC6.1        | FR3.2                           | deleteGasStationTest       |    
+|  UC7.1        | FR5.1                           | setReportTest        |  
+|  UC7.2        | FR5.1                           | setReportTest            |  
+|  UC8.1        | FR4,FR3.3                       | getGasStationsWithCoordinatesTest,getGasStationsByProximityTest,getGasStationByCarSharingTest,getGasStationsByGasolineTypeTest,getAllGasStationsTest |  
+|  UC8.2        | FR4                             | getGasStationsWithoutCoordinatesTest,getGasStationsByProximityTest,getGasStationByCarSharingTest,getGasStationsByGasolineTypeTest,getAllGasStationsTest |
+|  UC9.1        | FR5.2                           |   getAllGasStationsTest          |
+|  UC10.1       | FR5.3                           |  testIncreaseUserReputation           | 
+|  UC10.2       | FR5.3                           |  testDecreaseUserReputation           |         
 
 
 
 # Coverage of Non Functional Requirements
 
-
-<Report in the following table the coverage of the Non Functional Requirements of the application - only those that can be tested with automated testing frameworks.>
-
-
 ### 
 
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
-|            NFR2            |           |
+|            NFR2            |    All    |
+
+As can been see from the JUnit API tests all the test/FR are completed in less than 0.5 sec
 
 
 
