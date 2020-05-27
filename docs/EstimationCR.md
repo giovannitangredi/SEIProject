@@ -21,7 +21,7 @@ update of documents. Consider only effort on the back end (changes to all packag
 |   CR          | Priority (1 lowest 5 highest)       |          Effort (person hours) |   
 | ----------- | ------------------------------- | ---------------------------- | 
 | CR1   | 5 | 50 |          
-| CR2   | 4 | 30 | 
+| CR2   | 4 | 40 | 
 | CR3   | 2 | 30 | 
 | CR4   | 5 | 15 | 
 | CR5   | 2 | 70 | 
