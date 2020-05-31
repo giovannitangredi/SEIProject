@@ -70,7 +70,7 @@ frontend-->backend
 It was chose a mixed integration approach, the Service classes was tested first mocking the Repositories and other functions needed than after the repositories where fully tested we continued with a full bottom-up approach.
 
 
-##Sequence
+## Sequence
 |Step#|Classes|
 |-----|-------|
 |Step1|UserDto+GasStationDto+IdPw+LoginDto|
