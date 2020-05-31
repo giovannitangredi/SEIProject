@@ -67,8 +67,9 @@ frontend-->backend
      
 # Integration approach
 
-
 It was chose a mixed integration approach, the Service classes was tested first mocking the Repositories and other functions needed than after the repositories where fully tested we continued with a full bottom-up approach.
+
+
 ##Sequence
 |Step#|Classes|
 |-----|-------|
@@ -80,7 +81,6 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |Step6|UserServiceimpl+GasStationServiceimpl|
 
 
-
 #  Tests
 
 ## Step 1
@@ -90,7 +90,6 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |IdPw|IdPwTests|
 |LoginDto|LoginDtoTests|
 |GasStationDto|GasStationDtoTests|
-
 
 ## Step 2
 | Classes  | JUnit test cases |
@@ -124,17 +123,13 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |GasStationServiceimpl|GasStationServiceRealTests|
 
 
-
-
 # Scenarios
-
 
 <If needed, define here additional scenarios for the application. Scenarios should be named
  referring the UC they detail>
 
 ## Scenario UC1.1
-
-| Scenario |   Account that doesn't already exist |
+| Scenario |   Adding a non existing account |
 | ------------- |:-------------:| 
 |  Precondition     |Account U doesn't exist  |
 |  Post condition     |  Account U added int the system|
@@ -145,8 +140,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  4	 | The account is added in the DB 	|
 
 ## Scenario UC1.2
-
-| Scenario |  Account that already exists |
+| Scenario |  Adding an already existing account |
 | ------------- |:-------------:| 
 |  Precondition     | Another account with the email already exists |
 |  Post condition     |  Operation is aborted an error is issued |
@@ -157,8 +151,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  4	 |	System throw an error and abort the operation|
 
 ## Scenario UC2.1
-
-| Scenario |  not changing email  in that of another Account  |
+| Scenario |  Updating an account |
 | ------------- |:-------------:| 
 |  Precondition     | Another account with the email doesn't already exists |
 |  Post condition     |  Account U is updated |
@@ -171,7 +164,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 ## Scenario UC2.2
 
-| Scenario |   changing email  in that of another Account  |
+| Scenario |  Updating an account with an already existing email  |
 | ------------- |:-------------:| 
 |  Precondition     | Another account with the email  already exists |
 |  Post condition     |  Account U is not updated,operation aborted |
@@ -183,7 +176,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  5	 |	System throw an error and abort the operation|
 ## Scenario UC3.1
 
-| Scenario |   deleting account  |
+| Scenario |   Deleting an account  |
 | ------------- |:-------------:| 
 |  Precondition     | Account U exists |
 |  Post condition     |  Account U is deleted |
@@ -195,7 +188,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 ## Scenario UC4.1
 
-| Scenario |   right coordinates  |
+| Scenario |  Creating a Gas Station with right coordinates  |
 | ------------- |:-------------:| 
 |  Precondition     | Gas Station G doesn't exist |
 |  Post condition     |  Gas Station G is added to the system |
@@ -207,7 +200,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 ## Scenario UC4.2
 
-| Scenario |    coordinates out of bound |
+| Scenario |  Creating a Gas Station with out of bound coordinates |
 | ------------- |:-------------:| 
 |  Precondition     | Gas Station G doesn't exist, coordinates are out of bound |
 |  Post condition     |  Operation is aborted, System throws an error |
@@ -219,7 +212,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 ## Scenario UC5.1
 
-| Scenario |    coordinates in bound |
+| Scenario |  Updating a Gas Station with right coordinates  |
 | ------------- |:-------------:| 
 |  Precondition     | Gas Station G exist |
 |  Post condition     |  Gas Station G is updated  |
@@ -231,7 +224,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 ## Scenario UC5.2
 
-| Scenario |    coordinates are out of bound |
+| Scenario |  Updating a Gas Station with out of bound coordinates  |
 | ------------- |:-------------:| 
 |  Precondition     | Gas Station G exist |
 |  Post condition     |   Operation is aborted, System throws an error  |
@@ -243,8 +236,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  4	 |	System throws an error|
 
 ## Scenario UC6.1
-
-| Scenario |    deleting gas station |
+| Scenario |  Deleting a Gas Station  |
 | ------------- |:-------------:| 
 |  Precondition     | Gas Station G exist |
 |  Post condition     |   Gas Station G is deleted  |
@@ -256,7 +248,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 ## Scenario UC7.1
 
-| Scenario |    no negative prices |
+| Scenario |  Setting a price report with positive prices |
 | ------------- |:-------------:| 
 |  Precondition     | Gas Station G exist ,Account U exists|
 |  Post condition     |   Gas Station G has its price report P overwritten,P.timetag updated, userId of U is attached to G  |
@@ -271,7 +263,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 ## Scenario UC7.2
 
-| Scenario |    negative prices |
+| Scenario |  Setting a price report with negative prices |
 | ------------- |:-------------:| 
 |  Precondition     | Gas Station G exist ,Account U exists|
 |  Post condition     |   Operation aborted, System throes an error |
@@ -282,9 +274,10 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  4	 |  System abort the operation|
 |  5	 |	the system throws an error|
 
+
 ## Scenario UC8.1
 
-| Scenario |    obtain  gas stations with coordinates |
+| Scenario |  Get a Gas Stations with coordinates |
 | ------------- |:-------------:| 
 |  Precondition     | GeoPoint of the User/Visitator can be obtained|
 |  Post condition     |   the List of Gas Stations within 1 km from the Geo point given by User/Visitor is retrieved, Filters are applied if any were chosen , in case of void result a empty list is returned  |
@@ -292,30 +285,28 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  1     | U  use is own location|
 |  2     | System check that GeoPoint is not out of boundary|
 |  2     | All Gas stations within 1 km are retrieved|
-|  3	 |	Trust level of reports are updated like Scenario 9.1|
-|  4	 |  Filter Gas Station by fuel type|
-|  5	 |	Filter Gas Station by car sharing|
-|  6	 |  Return list of Gas Stations to the user |	
+|  3	 |	Trust level of reports are recalculated |
+|  4	 | Filter Gas Station by fuel type|
+|  5	 | Filter Gas Station by car sharing|
+|  6	 | Return list of Gas Stations to the user |	
 ## Scenario UC8.2
 
-| Scenario |    obtain  gas stations without coordinates |
+| Scenario |  Get a Gas Stations without coordinates |
 | ------------- |:-------------:| 
 |  Precondition     | Address inserted was valid|
-|  Post condition     |   the List of Gas Stations within 1 km from the Geo point given by User/Visitor is retrieved, Filters are applied if any were chosen , in case of void result a empty list is returned  |
+|  Post condition     |   the List of Gas Stations within 1 km from the Geo point of the User/Visitor is retrieved, Filters are applied if any were chosen , in case of void result a empty list is returned  |
 | Step#        | Description  |
 |  1     | U  select an address|
 |  2     | System check that GeoPoint is not out of boundary|
 |  2     | All Gas stations within 1 km are retrieved|
-|  3	 |	Trust level of reports are updated like Scenario 9.1|
+|  3	 |	Trust level of reports are recalculated|
 |  4	 |  Filter Gas Station by fuel type|
 |  5	 |	Filter Gas Station by car sharing|
 |  6	 |  Return list of Gas Stations to the user |	
 
-
-
 ## Scenario UC9.1
 
-| Scenario |    trust level evaluation |
+| Scenario |  Update trust level of price report |
 | ------------- |:-------------:| 
 |  Precondition     | Gas Station G exist,Gas Station G has a price report P attached|
 |  Post condition     |  Price Report of G is updated   |
@@ -323,8 +314,32 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  1     | a visitor search for a gas station|
 |  2     | The system gets all gas stations|
 |  3     |If the P.timestamp > 7 than obsolescence =0 else obsolescence=1 -(now-P.timestamp)/7|
-|  4	 |	Trust level= 50*(user trust level +5)/10 + 50*obsolescence|
+|  4	 |	Trust level= 50*(user trust level +5)/10 + 50 * obsolescence|
 |  5	 |	Steps 3 and 4 are repeated for all Gas Stations|
+
+## Scenario UC10.1
+| Scenario |  Evaluating a correct price report |
+| ------------- |:-------------:| 
+|  Precondition     | User U exists and has valid account |
+| | Gas Station G exists and has price list inserted by U2 |
+|  Post condition     | U2 trust level is increased  |
+| Step#        | Description  |
+|  1     |  U selects gas station G|  
+|  2     |  U signals price for G is correct|
+|  3    |  System searches the user U2 who did signal the prices for G|
+|  4    |  System increases by 1 the trust level of U2 |
+
+##Scenario 10.2 
+| Scenario |  Evaluating a wrong price report |
+| ------------- |:-------------:| 
+|  Precondition     | User U exists and has valid account |
+| | Gas Station G exists and has price list inserted by U2 |
+|  Post condition     | U2 trust level is decreased |
+| Step#        | Description  |
+|  1     |  U selects gas station G|  
+|  2     |  U signals price for G is wrong |
+|  3    |  System searches the user U2 who did signal the prices for G|
+|  4    |  System decreases  by 1 the trust level of U2 |
 
 
 # Coverage of Scenarios and FR
@@ -364,7 +379,7 @@ Class UserServiceimplRealTests has the following tests: testSaveUser, testDelete
 | -------------------------- | --------- |
 |            NFR2            |    All    |
 
-As can been see from the JUnit API tests all the test/FR are completed in less than 0.5 sec
+As could be observed from the JUnit API tests, all the test are completed in less than 0.5 sec
 
 
 
