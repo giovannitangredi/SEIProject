@@ -1,6 +1,9 @@
-package controllertests;
+package it.polito.ezgas.controllertests;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -18,9 +21,75 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.polito.ezgas.dto.GasStationDto;
+import it.polito.ezgas.dto.LoginDto;
+import it.polito.ezgas.dto.UserDto;
 
 public class TestController {
 	
+	@Test
+	public void loginTest() throws ClientProtocolException, IOException {
+		HttpPost request = new HttpPost("http://localhost:8080/user/login");
+		String reqJson="{\"user\":\"admin@ezgas.com\"\"pw\":\"admin\",\"user\":\"admin@ezgas.com\"}";
+		HttpEntity stringEntity= new StringEntity(reqJson,ContentType.APPLICATION_JSON);
+		request.setEntity(stringEntity);
+		HttpResponse response = HttpClientBuilder.create().build().execute(request);
+		String jsonString = EntityUtils.toString(response.getEntity());
+		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+		LoginDto userLogin= mapper.readValue(jsonString, LoginDto.class);
+		assertTrue(userLogin!=null);
+	}
+	
+	@Test
+	public void getAllUsersTest() throws ClientProtocolException, IOException {
+		HttpUriRequest request = new HttpGet("http://localhost:8080/user/getAllUsers");
+		HttpResponse response = HttpClientBuilder.create().build().execute(request);
+		String jsonString = EntityUtils.toString(response.getEntity());
+		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+		UserDto[] userArray= mapper.readValue(jsonString, UserDto[].class);
+		assertTrue(userArray.length>0);
+	}
+	@Test
+	public void getUsersByIdTest() throws ClientProtocolException, IOException {
+		HttpUriRequest request = new HttpGet("http://localhost:8080/user/getUser/161");
+		HttpResponse response = HttpClientBuilder.create().build().execute(request);
+		if(response.getStatusLine().getStatusCode()!=200)
+			fail("Failed");
+		String jsonString = EntityUtils.toString(response.getEntity());
+		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+		UserDto user= mapper.readValue(jsonString, UserDto.class);
+		assertTrue(user!=null && user.getUserId()==161);
+	}
+	@Test
+	public void saveUserTest() throws ClientProtocolException, IOException {
+		HttpPost request = new HttpPost("http://localhost:8080/user/saveUser");
+		String reqJson="{\"userName\":\"userREST\",\"password\":\"userREST\",\"email\":\"userREST@ezgas.com\",\"admin\":false,\"reputation\":0}";
+		HttpEntity stringEntity= new StringEntity(reqJson,ContentType.APPLICATION_JSON);
+		request.setEntity(stringEntity);
+		HttpResponse response = HttpClientBuilder.create().build().execute(request);
+		String jsonString = EntityUtils.toString(response.getEntity());
+		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+		UserDto user= mapper.readValue(jsonString, UserDto.class);
+		assertTrue(response.getStatusLine().getStatusCode()==200 && user!=null);
+	}
+	@Test
+	public void decreaseUserReputationTest() throws ClientProtocolException, IOException {
+		HttpPost request = new HttpPost("http://localhost:8080/user/decreaseUserReputation/161");
+		HttpResponse response = HttpClientBuilder.create().build().execute(request);
+		assertTrue(response.getStatusLine().getStatusCode()==200);
+	}
+	@Test
+	public void increaseUserReputationTest() throws ClientProtocolException, IOException {
+		HttpPost request = new HttpPost("http://localhost:8080/user/increaseUserReputation/161");
+		HttpResponse response = HttpClientBuilder.create().build().execute(request);
+		assertTrue(response.getStatusLine().getStatusCode()==200);
+	}
+	@Test
+	public void deleteUserTest() throws ClientProtocolException, IOException {
+		HttpUriRequest request = new HttpDelete("http://localhost:8080/user/deleteUser/65");
+		HttpResponse response = HttpClientBuilder.create().build().execute(request);
+		String s = EntityUtils.toString(response.getEntity());
+		assertEquals(s,"true");
+	}
 	@Test
 	public void getGasStationByIdTest() throws ClientProtocolException, IOException {
 		HttpUriRequest request = new HttpGet("http://localhost:8080/gasstation/getGasStation/1");
