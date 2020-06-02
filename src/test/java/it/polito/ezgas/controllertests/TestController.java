@@ -29,7 +29,7 @@ public class TestController {
 	@Test
 	public void loginTest() throws ClientProtocolException, IOException {
 		HttpPost request = new HttpPost("http://localhost:8080/user/login");
-		String reqJson="{\"user\":\"admin@ezgas.com\"\"pw\":\"admin\",\"user\":\"admin@ezgas.com\"}";
+		String reqJson="{\"user\":\"admin@ezgas.com\"\"pw\":\"admin\"}";
 		HttpEntity stringEntity= new StringEntity(reqJson,ContentType.APPLICATION_JSON);
 		request.setEntity(stringEntity);
 		HttpResponse response = HttpClientBuilder.create().build().execute(request);
@@ -158,8 +158,9 @@ public class TestController {
 	public void deleteGasStationTest() throws ClientProtocolException, IOException {
 		HttpUriRequest request = new HttpDelete("http://localhost:8080/gasstation/deleteGasStation/98/");
 		HttpResponse response = HttpClientBuilder.create().build().execute(request);
-		
-		assert(response.getStatusLine().getStatusCode() == 200);
+
+		String s = EntityUtils.toString(response.getEntity());
+		assertEquals(s,"true");
 	}
 	
 	@Test
