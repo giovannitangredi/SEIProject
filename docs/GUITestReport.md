@@ -30,9 +30,9 @@ It was used SikulixIDE 2.0.4
 |  UC7.2        | FR5.1                         | uc7_2.py            |  
 |  UC8.1        | FR4,FR3.3                     | uc8_1.py			  |  
 |  UC8.2        | FR4                           | uc8_2.py			  |
-|  UC9.1        | FR5.2                         | uc9_1.py            |
-|  UC10.1       | FR5.3                         | uc10_1.py            | 
-|  UC10.2       | FR5.3                         | uc10_2.py            |                
+|  UC9.1        | FR5.2                         | uc9-10.py            |
+|  UC10.1       | FR5.3                         | uc9-10.py            | 
+|  UC10.2       | FR5.3                         | uc9-10.py            |                
 
 
 # REST  API  Testing
