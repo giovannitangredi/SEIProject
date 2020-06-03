@@ -1,0 +1,18 @@
+for i in range(15):
+    type(Key.DOWN)
+wait(1)
+type("1590930339661.png", "GS1")
+type(Key.ESC)
+type("1590930352459.png", "corso castelfidardo")
+wait(4) # waiting for the address suggestions to show up
+type(Key.DOWN)
+type(Key.ENTER)
+click("1590930517635.png")
+type(Key.DOWN)
+type(Key.DOWN)
+type(Key.ENTER)
+click("1590930570320.png")
+click("1590930580334.png")
+click("1590930606484.png")
+wait(1)
+find("1590931654743.png")
