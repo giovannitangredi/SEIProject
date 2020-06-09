@@ -1,5 +1,6 @@
 package it.polito.ezgas.service.impl;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -69,7 +70,7 @@ public class GasStationServiceimpl implements GasStationService {
 				// make the new calculus on the Price Report dependability
 				try {
 					
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+					SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-YYYY");
 					Date reportTimestamp;
 					reportTimestamp = sdf.parse(gasStation.getReportTimestamp());
 					Calendar calReport = Calendar.getInstance();
@@ -87,7 +88,6 @@ public class GasStationServiceimpl implements GasStationService {
 				}
 			}
 		}
-		
 		return GasStationConverter.toGasStationDto(gasStation);
 	}
 
@@ -105,7 +105,9 @@ public class GasStationServiceimpl implements GasStationService {
 		
 		//inserting new gas station or updating an existing one
 		GasStation gasStation = new GasStation();
-		
+		if(gasStationDto.getCarSharing()!=null && 
+				gasStationDto.getCarSharing().toLowerCase().equals("null"))
+			gasStationDto.setCarSharing(null);
 		gasStation = repository.save(GasStationConverter.toGasStation(gasStationDto));
 
 		return GasStationConverter.toGasStationDto(gasStation);
@@ -135,7 +137,7 @@ public class GasStationServiceimpl implements GasStationService {
 					// make the new calculus on the Price Report dependability
 					try {
 						
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+						SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-YYYY");
 						Date reportTimestamp;
 						reportTimestamp = sdf.parse(gasStation.getReportTimestamp());
 						Calendar calReport = Calendar.getInstance();
@@ -469,14 +471,14 @@ public class GasStationServiceimpl implements GasStationService {
 		if( gasStationDto.getHasMethane() == true && methanePrice<0 ) {
 			throw new PriceException("Invalide methane price value!");
 		}
-		
+		DateFormat format = new SimpleDateFormat("MM-dd-YYYY");
 		gasStationDto.setDieselPrice(dieselPrice);
 		gasStationDto.setSuperPrice(superPrice);
 		gasStationDto.setSuperPlusPrice(superPlusPrice);
 		gasStationDto.setGasPrice(gasPrice);
 		gasStationDto.setMethanePrice(methanePrice);
 		gasStationDto.setReportUser(userId);
-		gasStationDto.setReportTimestamp(LocalDateTime.now().toString());
+		gasStationDto.setReportTimestamp(format.format(new Date(System.currentTimeMillis())));
 		double dependability = 50 * (userDto.getReputation() +5)/10 + 50; /*0 is because of obsolescence*/;
 		gasStationDto.setReportDependability(dependability);
 		gasStationDto.setUserDto(userDto);
