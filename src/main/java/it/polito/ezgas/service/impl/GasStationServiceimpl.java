@@ -471,14 +471,37 @@ public class GasStationServiceimpl implements GasStationService {
 		if( gasStationDto.getHasMethane() == true && methanePrice<0 ) {
 			throw new PriceException("Invalide methane price value!");
 		}
+		
 		DateFormat format = new SimpleDateFormat("MM-dd-YYYY");
+		Date today = new Date(System.currentTimeMillis());
+		
+		// CR4: overwriting a price report only if new user trust level >= previous user trust level
+		// or if today - report timestamp > 4
+		
+		if( gasStationDto.getReportUser() != null ) {
+			UserDto previousUser = userService.getUserById(gasStationDto.getReportUser());
+			if( userDto.getReputation() < previousUser.getReputation() ) {
+				Date previousTimestamp = null;
+				try {
+					previousTimestamp = format.parse(gasStationDto.getReportTimestamp());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				
+				int passedDays = ((int) (today.getTime() - previousTimestamp.getTime())) / (24 * 60 * 60 * 1000);
+				if( passedDays <= 4 ) {
+					return;
+				}
+			} 
+		}
+		
 		gasStationDto.setDieselPrice(dieselPrice);
 		gasStationDto.setSuperPrice(superPrice);
 		gasStationDto.setSuperPlusPrice(superPlusPrice);
 		gasStationDto.setGasPrice(gasPrice);
 		gasStationDto.setMethanePrice(methanePrice);
 		gasStationDto.setReportUser(userId);
-		gasStationDto.setReportTimestamp(format.format(new Date(System.currentTimeMillis())));
+		gasStationDto.setReportTimestamp(format.format(today));
 		double dependability = 50 * (userDto.getReputation() +5)/10 + 50; /*0 is because of obsolescence*/;
 		gasStationDto.setReportDependability(dependability);
 		gasStationDto.setUserDto(userDto);
