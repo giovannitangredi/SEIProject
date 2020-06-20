@@ -104,7 +104,7 @@ public class UserServiceimpl implements UserService {
 			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		User user= userRepository.findOne(userId);
 		if(user==null)
-			return null;
+			throw new InvalidUserException("ERROR: USER WITH THESE ID DOES NOT EXISTS!");
 		if(user.getReputation()<5) //reputation cannot be higher than 5
 			newreputation= user.getReputation()+1;
 		else
@@ -122,7 +122,7 @@ public class UserServiceimpl implements UserService {
 			throw new InvalidUserException("ERROR:ID IS NOT VALID!");
 		User user= userRepository.findOne(userId);
 		if(user==null)
-			return null;
+			throw new InvalidUserException("ERROR: USER WITH THESE ID DOES NOT EXISTS!");
 		if(user.getReputation()>-5)//reputation cannot be lower than 5
 			newreputation= user.getReputation()-1;
 		else
