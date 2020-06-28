@@ -25,6 +25,8 @@ public class GasStationConverter {
 		gasStationConverted.setSuperPlusPrice(gasStation.getSuperPlusPrice());
 		gasStationConverted.setGasPrice(gasStation.getGasPrice());
 		gasStationConverted.setMethanePrice(gasStation.getMethanePrice());
+		// v2: issue 1 added premium diesel
+		gasStationConverted.setPremiumDieselPrice(gasStation.getPremiumDieselPrice());
 		gasStationConverted.setReportUser(gasStation.getReportUser());
 		//handling first time saving gas station without price report
 		if( gasStation.getUser() != null ) {
@@ -57,6 +59,8 @@ public class GasStationConverter {
 		gasStationConverted.setSuperPlusPrice(gasStationDto.getSuperPlusPrice());
 		gasStationConverted.setGasPrice(gasStationDto.getGasPrice());
 		gasStationConverted.setMethanePrice(gasStationDto.getMethanePrice());
+		// v2: issue 1 added premium diesel
+		gasStationConverted.setPremiumDieselPrice(gasStationDto.getPremiumDieselPrice());
 		gasStationConverted.setReportUser(gasStationDto.getReportUser());
 		//handling first time saving gas station without price report
 		if( gasStationDto.getUserDto() != null ) {

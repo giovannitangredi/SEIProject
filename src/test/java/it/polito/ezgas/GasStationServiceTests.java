@@ -310,7 +310,7 @@ public class GasStationServiceTests {
 		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1, "null", "Enjoy");
 		assertTrue(lstGasStations.size() == 1);
 
-		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1, "diesel", "Ennjoy");
+		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1, "diesel", "car2go");
 		assertTrue(lstGasStations.size() == 0);
 		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1, "diesel", null);
 		assertTrue(lstGasStations.size() == 1);
@@ -382,6 +382,10 @@ public class GasStationServiceTests {
 		
 		assertThrows(PriceException.class, () -> {
 			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, -1.6, 1.7, userDto.getUserId());
+		});
+		
+		assertThrows(PriceException.class, () -> {
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, 1.6, -1.7, userDto.getUserId());
 		});
 		
 

@@ -184,12 +184,17 @@ public class GasStationServiceRealTest {
 		assertEquals(gasStation1.getLon(), result.get(0).getLon());
 
 		// Scenario 8.1
-		GasStation gasStation3 = new GasStation("GS2", "Via dei pazzi, 0", false, true, true, true, true, true, "AVIS", 45,
+		GasStation gasStation3 = new GasStation("GS2", "Via dei pazzi, 0", false, true, true, true, true, true, "Enjoy", 45,
 				46, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
 		gsRepo.save(gasStation3);
-		List<GasStationDto> result2 = gsService.getGasStationsWithCoordinates(45, 46, 1, "super", "ShareNow");
+		List<GasStationDto> result2 = gsService.getGasStationsWithCoordinates(45, 46, 1, "super", "Enjoy");
+		
 		assertNotNull(result2);
 		assertEquals(1, result2.size());
+		
+		assertThrows(InvalidCarSharingException.class, () -> {
+			gsService.getGasStationsWithCoordinates(45, 46, 1, "super", "ShareNow");
+		});
 	}
 
 	@Test

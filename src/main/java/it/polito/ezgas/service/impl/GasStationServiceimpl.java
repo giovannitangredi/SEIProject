@@ -491,6 +491,9 @@ public class GasStationServiceimpl implements GasStationService {
 		if( gasStationDto.getHasMethane() == true && methanePrice<0 ) {
 			throw new PriceException("Invalide methane price value!");
 		}
+		if( gasStationDto.getHasPremiumDiesel() == true && premiumDieselPrice<0 ) {
+			throw new PriceException("Invalide premium diesel price value!");
+		}
 		
 		DateFormat format = new SimpleDateFormat("MM-dd-YYYY");
 		Date today = new Date(System.currentTimeMillis());
@@ -520,6 +523,7 @@ public class GasStationServiceimpl implements GasStationService {
 		gasStationDto.setSuperPlusPrice(superPlusPrice);
 		gasStationDto.setGasPrice(gasPrice);
 		gasStationDto.setMethanePrice(methanePrice);
+		gasStationDto.setPremiumDieselPrice(premiumDieselPrice);
 		gasStationDto.setReportUser(userId);
 		gasStationDto.setReportTimestamp(format.format(today));
 		double dependability = 50 * (userDto.getReputation() +5)/10 + 50; /*0 is because of obsolescence*/;
