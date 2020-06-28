@@ -17,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import exception.GPSDataException;
+import exception.InvalidCarSharingException;
 import exception.InvalidGasStationException;
 import exception.InvalidGasTypeException;
 import exception.InvalidUserException;
@@ -55,6 +56,7 @@ public class GasStationServiceTests {
 	boolean hasSuperPlus;
 	boolean hasGas;
 	boolean hasMethane;
+	boolean hasPremiumDiesel;
 	String carSharing;
 	double lat;
 	double lon;
@@ -63,6 +65,7 @@ public class GasStationServiceTests {
 	double superPlusPrice;
 	double gasPrice;
 	double methanePrice;
+	double premiumDieselPrice;
 	Integer reportUser;
 	UserDto userDto;
 	String reportTimestamp;
@@ -81,6 +84,7 @@ public class GasStationServiceTests {
 		hasSuperPlus = true;
 		hasGas = false;
 		hasMethane = false;
+		hasPremiumDiesel = true;
 		carSharing = "Enjoy";
 		lat = 45.039188;
 		lon = 7.642538;
@@ -89,20 +93,21 @@ public class GasStationServiceTests {
 		superPlusPrice = 1.5;
 		gasPrice = 1.4;
 		methanePrice = 1.1;
+		premiumDieselPrice = 2.05;
 		reportUser = 1;
 		userDto = new UserDto(1, "user1", "password", "user@user.com", 20);
 		reportTimestamp = "2020-05-20T10:11:41.111";
 		reportDependability = 30;
 
 		gs = new GasStation(gasStationName, gasStationAddress, hasDiesel, hasSuper, hasSuperPlus, hasGas, hasMethane,
-				carSharing, lat, lon, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, reportUser,
-				reportTimestamp, reportDependability);
+				hasPremiumDiesel, carSharing, lat, lon, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, 
+				premiumDieselPrice, reportUser,reportTimestamp, reportDependability);
 		gs.setGasStationId(gasStationId);
 		gs.setUser(UserConverter.toUser(userDto));
 
 		gs2 = new GasStation(gasStationName, gasStationAddress, hasDiesel, hasSuper, hasSuperPlus, hasGas, hasMethane,
-				carSharing, lat, lon, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, reportUser,
-				reportTimestamp, reportDependability);
+				hasPremiumDiesel, carSharing, lat, lon, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, 
+				premiumDieselPrice, reportUser,reportTimestamp, reportDependability);
 		gs2.setGasStationId(3);
 		gs2.setHasDiesel(false);
 		gs2.setHasSuperPlus(false);
@@ -116,9 +121,9 @@ public class GasStationServiceTests {
 		lst.add(gs);
 		lst.add(gs2);
 
-		gs3 = new GasStation(gasStationName, gasStationAddress, true, true, true, true, true, "Free", 76.26462,
-				45.04123, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, reportUser, reportTimestamp,
-				reportDependability);
+		gs3 = new GasStation(gasStationName, gasStationAddress, true, true, true, true, true, true, "Free", 76.26462,
+				45.04123, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, premiumDieselPrice, reportUser, 
+				reportTimestamp, reportDependability);
 		gs3.setGasStationId(10);
 		gs3.setUser(UserConverter.toUser(userDto));
 
@@ -288,11 +293,11 @@ public class GasStationServiceTests {
 	}
 
 	@Test
-	public void getGasStationsWithCoordinatesTest() throws InvalidGasTypeException, GPSDataException {
+	public void getGasStationsWithCoordinatesTest() throws InvalidGasTypeException, GPSDataException, InvalidCarSharingException {
 		assertThrows(GPSDataException.class, () -> {
-			gsService.getGasStationsWithCoordinates(91.039188, 7.642538, "diesel", "Enjoy");
+			gsService.getGasStationsWithCoordinates(91.039188, 7.642538, 1, "diesel", "Enjoy");
 		});
-		List<GasStationDto> lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, "diesel",
+		List<GasStationDto> lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1, "diesel",
 				"Enjoy");
 		assertTrue(lstGasStations.size() == 1);
 		assertEquals(lstGasStations.get(0).getLat(), lat, 2);
@@ -300,20 +305,20 @@ public class GasStationServiceTests {
 		assertEquals(lstGasStations.get(0).getHasDiesel(), true);
 		assertEquals(lstGasStations.get(0).getCarSharing(), carSharing);
 
-		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, null, "Enjoy");
+		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538,1,  null, "Enjoy");
 		assertTrue(lstGasStations.size() == 1);
-		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, "null", "Enjoy");
+		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1, "null", "Enjoy");
 		assertTrue(lstGasStations.size() == 1);
 
-		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, "diesel", "Ennjoy");
+		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1, "diesel", "Ennjoy");
 		assertTrue(lstGasStations.size() == 0);
-		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, "diesel", null);
+		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1, "diesel", null);
 		assertTrue(lstGasStations.size() == 1);
-		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, "diesel", "null");
+		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1,"diesel", "null");
 		assertTrue(lstGasStations.size() == 1);
 
 		when(gsRepo.findAll()).thenReturn(null);
-		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, "diesel", "Enjoy");
+		lstGasStations = gsService.getGasStationsWithCoordinates(45.039188, 7.642538, 1,"diesel", "Enjoy");
 		assertTrue(lstGasStations.size() == 0);
 	}
 
@@ -350,45 +355,46 @@ public class GasStationServiceTests {
 		
 		//Invalid Gas Station Exception Test
 		assertThrows(InvalidGasStationException.class, () -> {
-			gsService.setReport(-1, 1.2, 1.3, 1.4, 1.5, 1.6, userDto.getUserId());
+			gsService.setReport(-1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, userDto.getUserId());
 		});
 		
 		//Invalid User Exception Test
 		assertThrows(InvalidUserException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, 1.6, -1);
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, -1);
 		});
 		
 		// Price Exception Tests
 		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), -1.2, 1.3, 1.4, 1.5, 1.6, userDto.getUserId());
+			gsService.setReport(gs3.getGasStationId(), -1.2, 1.3, 1.4, 1.5, 1.6, 1.7, userDto.getUserId());
 		});
 		
 		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), 1.2, -1.3, 1.4, 1.5, 1.6, userDto.getUserId());
+			gsService.setReport(gs3.getGasStationId(), 1.2, -1.3, 1.4, 1.5, 1.6, 1.7, userDto.getUserId());
 		});
 		
 		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, -1.4, 1.5, 1.6, userDto.getUserId());
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, -1.4, 1.5, 1.6, 1.7, userDto.getUserId());
 		});
 		
 		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, -1.5, 1.6, userDto.getUserId());
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, -1.5, 1.6, 1.7, userDto.getUserId());
 		});
 		
 		assertThrows(PriceException.class, () -> {
-			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, -1.6, userDto.getUserId());
+			gsService.setReport(gs3.getGasStationId(), 1.2, 1.3, 1.4, 1.5, -1.6, 1.7, userDto.getUserId());
 		});
 		
 
-		gsService.setReport(gasStationId, 1.6, 1.5, 1.7, 1.4, 1.1, userDto.getUserId());
+		gsService.setReport(gasStationId, 1.6, 1.5, 1.7, 1.4, 1.1, 1.7, userDto.getUserId());
 		GasStationDto result = gsService.getGasStationById(gasStationId);
 		assertEquals(result.getDieselPrice(), 1.6, 1);
 		assertEquals(result.getSuperPrice(), 1.7, 1);
 		assertEquals(result.getGasPrice(), 1.4, 1);
 		assertEquals(result.getMethanePrice(), 1.1, 1);
+		assertEquals(result.getPremiumDieselPrice(), 1.7, 1);
 				
 		when(gsRepo.findOne(gasStationId)).thenReturn(null);
-		gsService.setReport(gasStationId, 1.6, 1.5, 1.7, 1.4, 1.1, userDto.getUserId());
+		gsService.setReport(gasStationId, 1.6, 1.5, 1.7, 1.4, 1.1, 1.7, userDto.getUserId());
 	}
 
 	@Test

@@ -21,15 +21,15 @@ public class GasStationConverterTests {
 	public void testToGasStationDto1() {
 		GasStation gasStation = new GasStation("test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 		gasStation.setGasStationId(1);
 		GasStationDto expected = new GasStationDto(1,"test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 		GasStationDto conv=GasStationConverter.toGasStationDto(gasStation);
 		assertEquals(conv.getCarSharing(),expected.getCarSharing());
 		assertEquals(conv.getDieselPrice(),expected.getDieselPrice());
@@ -42,6 +42,8 @@ public class GasStationConverterTests {
 		assertEquals(conv.getHasMethane(),expected.getHasMethane());
 		assertEquals(conv.getHasSuper(),expected.getHasSuper());
 		assertEquals(conv.getHasSuperPlus(),expected.getHasSuperPlus());
+		// v2 issue 1
+		assertEquals(conv.getHasPremiumDiesel(),expected.getHasPremiumDiesel());
 		assertEquals(conv.getGasStationAddress(),expected.getGasStationAddress());
 		assertEquals(conv.getGasStationId(),expected.getGasStationId());
 		assertEquals(conv.getGasStationName(),expected.getGasStationName());
@@ -55,17 +57,17 @@ public class GasStationConverterTests {
 	public void testToGasStationDto2() {
 		GasStation gasStation = new GasStation("test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 		gasStation.setGasStationId(1);
 		User user= new User();
 		gasStation.setUser(user);
 		GasStationDto expected = new GasStationDto(1,"test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 		UserDto userDto= new UserDto();
 		expected.setUserDto(userDto);
 		GasStationDto conv=GasStationConverter.toGasStationDto(gasStation);
@@ -80,6 +82,8 @@ public class GasStationConverterTests {
 		assertEquals(conv.getHasMethane(),expected.getHasMethane());
 		assertEquals(conv.getHasSuper(),expected.getHasSuper());
 		assertEquals(conv.getHasSuperPlus(),expected.getHasSuperPlus());
+		// v2 issue 1
+		assertEquals(conv.getHasPremiumDiesel(),expected.getHasPremiumDiesel());
 		assertEquals(conv.getGasStationAddress(),expected.getGasStationAddress());
 		assertEquals(conv.getGasStationId(),expected.getGasStationId());
 		assertEquals(conv.getGasStationName(),expected.getGasStationName());
@@ -98,15 +102,15 @@ public class GasStationConverterTests {
 	public void testToGasStation1() {
 		GasStation expected = new GasStation("test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 		expected.setGasStationId(1);
 		GasStationDto gasStationDto = new GasStationDto(1,"test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 		GasStation conv=GasStationConverter.toGasStation(gasStationDto);
 		assertEquals(conv.getCarSharing(),expected.getCarSharing());
 		assertEquals(conv.getDieselPrice(),expected.getDieselPrice());
@@ -119,6 +123,8 @@ public class GasStationConverterTests {
 		assertEquals(conv.getHasMethane(),expected.getHasMethane());
 		assertEquals(conv.getHasSuper(),expected.getHasSuper());
 		assertEquals(conv.getHasSuperPlus(),expected.getHasSuperPlus());
+		// v2 issue 1
+		assertEquals(conv.getHasPremiumDiesel(),expected.getHasPremiumDiesel());
 		assertEquals(conv.getGasStationAddress(),expected.getGasStationAddress());
 		assertEquals(conv.getGasStationId(),expected.getGasStationId());
 		assertEquals(conv.getGasStationName(),expected.getGasStationName());
@@ -131,16 +137,16 @@ public class GasStationConverterTests {
 	public void testToGasStation2() {
 		GasStation expected = new GasStation("test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 		expected.setGasStationId(1);
 		expected.setUser(new User());
 		GasStationDto gasStationDto = new GasStationDto(1,"test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 		gasStationDto.setUserDto(new UserDto());
 		GasStation conv=GasStationConverter.toGasStation(gasStationDto);
 		assertEquals(conv.getCarSharing(),expected.getCarSharing());
@@ -154,6 +160,8 @@ public class GasStationConverterTests {
 		assertEquals(conv.getHasMethane(),expected.getHasMethane());
 		assertEquals(conv.getHasSuper(),expected.getHasSuper());
 		assertEquals(conv.getHasSuperPlus(),expected.getHasSuperPlus());
+		// v2 issue 1
+		assertEquals(conv.getHasPremiumDiesel(),expected.getHasPremiumDiesel());
 		assertEquals(conv.getGasStationAddress(),expected.getGasStationAddress());
 		assertEquals(conv.getGasStationId(),expected.getGasStationId());
 		assertEquals(conv.getGasStationName(),expected.getGasStationName());

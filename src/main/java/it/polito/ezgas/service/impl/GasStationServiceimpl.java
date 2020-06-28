@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import exception.GPSDataException;
+import exception.InvalidCarSharingException;
 import exception.InvalidGasStationException;
 import exception.InvalidGasTypeException;
 import exception.InvalidUserException;
@@ -94,6 +95,8 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public GasStationDto saveGasStation(GasStationDto gasStationDto) throws PriceException, GPSDataException {
 		//price error has not to be handled
+		// TODO check if to handle price exception
+		
 		
 		//GPS error handling
 		if(gasStationDto.getLat()>90 || gasStationDto.getLat()<-90) {
@@ -108,6 +111,7 @@ public class GasStationServiceimpl implements GasStationService {
 		if(gasStationDto.getCarSharing()!=null && 
 				gasStationDto.getCarSharing().toLowerCase().equals("null"))
 			gasStationDto.setCarSharing(null);
+		
 		gasStation = repository.save(GasStationConverter.toGasStation(gasStationDto));
 
 		return GasStationConverter.toGasStationDto(gasStation);
@@ -211,6 +215,9 @@ public class GasStationServiceimpl implements GasStationService {
 		} else if( gasoline.compareTo("methane") == 0 ) {
 			filteredGasStations = gasStations.stream().filter(g -> g.getHasMethane())
 											.sorted(Comparator.comparingDouble(GasStationDto::getMethanePrice));
+		} else if( gasoline.compareTo("premiumdiesel") == 0 ) {
+			filteredGasStations = gasStations.stream().filter(g -> g.getHasPremiumDiesel())
+					.sorted(Comparator.comparingDouble(GasStationDto::getPremiumDieselPrice));
 		} else {
 			//gasoline type error handling
 			throw new InvalidGasTypeException(gasolinetype + "is an invalid gas type!");
@@ -221,7 +228,7 @@ public class GasStationServiceimpl implements GasStationService {
 	}
 
 	@Override
-	public List<GasStationDto> getGasStationsByProximity(double lat, double lon) throws GPSDataException {
+	public List<GasStationDto> getGasStationsByProximity(double lat, double lon, int radius) throws GPSDataException {
 		
 		//GPS error handling
 		if( lat>90 || lat<-90 ) {
@@ -266,7 +273,6 @@ public class GasStationServiceimpl implements GasStationService {
 		double lat45 = 0.00899831;
 		double lat60 = 0.00897570;
 		double lat75 = 0.00895913;
-		double lat90 = 0.00895303;
 		
 		double lon0 = 0.00898311;
 		double lon15 = 0.00929800;
@@ -274,7 +280,6 @@ public class GasStationServiceimpl implements GasStationService {
 		double lon45 = 0.01268279;
 		double lon60 = 0.01792115;
 		double lon75 = 0.03459968;
-		double lon90 = 0.0;
 		
 		double latUnsigned = Math.abs(lat);
 		double latUpper = 0;
@@ -316,12 +321,17 @@ public class GasStationServiceimpl implements GasStationService {
 			lonLeft = lon - lon75;
 		}
 		
-		GPSArea[0] = latUpper;
-		GPSArea[1] = latLower;
-		GPSArea[2] = lonRight;
-		GPSArea[3] = lonLeft;
-	
+		// set the radius
+		int kms = 1;
+		if(radius > 0) {
+			kms = radius;
+		}
 		
+		GPSArea[0] = latUpper*kms;
+		GPSArea[1] = latLower*kms;
+		GPSArea[2] = lonRight*kms;
+		GPSArea[3] = lonLeft*kms;
+
 		//filter gas station for the coordinates inside the limits of 1km
 		Stream<GasStationDto> filteredGasStations = gasStations.stream()
 				.filter(g -> g.getLat()<GPSArea[0] && g.getLat()>GPSArea[1] &&
@@ -333,13 +343,25 @@ public class GasStationServiceimpl implements GasStationService {
 		return filteredGasStations
 				.collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<GasStationDto> getGasStationsByProximity(double lat, double lon) throws GPSDataException {
+		List<GasStationDto> result = getGasStationsByProximity(lat, lon, 1);
+		return result;
+	}
 
 	@Override
-	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, String gasolinetype,
-			String carsharing) throws InvalidGasTypeException, GPSDataException {
+	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, int radius, String gasolinetype,
+			String carsharing) throws InvalidGasTypeException, GPSDataException, InvalidCarSharingException {
+		// handle car sharing exception
+		if( carsharing != null && carsharing.compareTo("null") != 0 
+				&& carsharing.toLowerCase().compareTo("enjoy") != 0
+				&& carsharing.toLowerCase().compareTo("car2go") != 0)
+			throw new InvalidCarSharingException("Invalid car sharing!");
+		
 		//retrieving gas stations by proximity
-		//exceptions not handled because they should be launched by the called methods
-		List<GasStationDto> gasStationsByProximity = getGasStationsByProximity(lat, lon);
+		// other exceptions not handled because they should be launched by the called methods
+		List<GasStationDto> gasStationsByProximity = getGasStationsByProximity(lat, lon, radius);
 		List<GasStationDto> gasStationsByProximityAndFuelType = new ArrayList<GasStationDto>(); 
 		List<GasStationDto> gasStationsByProximityAndFuelTypeAndCarSharing = new ArrayList<GasStationDto>();
 		List<GasStationDto> gasStationsFiltered = new ArrayList<GasStationDto>();
@@ -377,9 +399,7 @@ public class GasStationServiceimpl implements GasStationService {
 					.filter( g -> gasStationsByCarSharing.contains(g.getGasStationId())).collect(Collectors.toList());
 			gasStationsFiltered = gasStationsByProximityAndFuelTypeAndCarSharing;
 		}
-		
-		
-		
+
 		return gasStationsFiltered;
 	}
 
@@ -431,8 +451,8 @@ public class GasStationServiceimpl implements GasStationService {
 	}
 
 	@Override
-	public void setReport(Integer gasStationId, double dieselPrice, double superPrice, double superPlusPrice,
-			double gasPrice, double methanePrice, Integer userId)
+	public void setReport(Integer gasStationId, Double dieselPrice, Double superPrice, Double superPlusPrice,
+			Double gasPrice, Double methanePrice, Double premiumDieselPrice, Integer userId)
 			throws InvalidGasStationException, PriceException, InvalidUserException {
 		//gas station id error handling
 		if( gasStationId<0 ) {
@@ -529,5 +549,7 @@ public class GasStationServiceimpl implements GasStationService {
 		return filteredGasStations
 				.collect(Collectors.toList());
 	}
+
+	
 	
 }
