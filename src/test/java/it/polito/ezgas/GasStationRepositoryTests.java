@@ -4,22 +4,29 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.repository.GasStationRepository;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@AutoConfigureTestDatabase
+@SpringBootTest
 public class GasStationRepositoryTests {
 
 	@Autowired
 	GasStationRepository gasStationRepository;
-	
+	@Before
+	public void setUp() {
+		gasStationRepository.deleteAll();
+	}
 	@Test
 	public void testFindOne() {
 		GasStation gasStation = new GasStation("GS1", "Via dei pazzi, 0", true, true,
