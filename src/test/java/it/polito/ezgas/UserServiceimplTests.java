@@ -207,8 +207,7 @@ public class UserServiceimplTests {
 		assertEquals(overReputation, userOverRep.getReputation());
 		
 		when(userRepositoryMock.findOne(anyInt())).thenReturn(null);
-		Integer nullReputation = userService.increaseUserReputation(userId);
-		assertNull(nullReputation);
+		assertThrows(InvalidUserException.class, () -> userService.increaseUserReputation(userId));
 		
 		assertThrows(InvalidUserException.class, () -> userService.increaseUserReputation(invalidUserId));
 		assertThrows(InvalidUserException.class, () -> userService.increaseUserReputation(null));
@@ -227,8 +226,7 @@ public class UserServiceimplTests {
 		assertEquals(underReputation, userUnderRep.getReputation());
 		
 		when(userRepositoryMock.findOne(anyInt())).thenReturn(null);
-		Integer nullReputation = userService.decreaseUserReputation(userId);
-		assertNull(nullReputation);
+		assertThrows(InvalidUserException.class, () -> userService.increaseUserReputation(userId));
 		
 		assertThrows(InvalidUserException.class, () -> userService.decreaseUserReputation(invalidUserId));
 		assertThrows(InvalidUserException.class, () -> userService.decreaseUserReputation(null));

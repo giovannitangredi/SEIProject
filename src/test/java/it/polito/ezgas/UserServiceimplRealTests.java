@@ -23,6 +23,9 @@ import it.polito.ezgas.repository.UserRepository;
 import it.polito.ezgas.service.impl.UserServiceimpl;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase
@@ -129,6 +132,8 @@ public class UserServiceimplRealTests {
 		Integer expectedRep = user.getReputation() + 1;
 		Integer reputation = userService.increaseUserReputation(user.getUserId());
 		assertEquals(expectedRep, reputation);
+		userRepository.delete(user.getUserId());
+		assertThrows(InvalidUserException.class, () -> userService.increaseUserReputation(1));
 	}
 	
 	@Test
@@ -138,6 +143,8 @@ public class UserServiceimplRealTests {
 		Integer expectedRep = user.getReputation() - 1;
 		Integer reputation = userService.decreaseUserReputation(user.getUserId());
 		assertEquals(expectedRep, reputation);
+		userRepository.delete(user.getUserId());
+		assertThrows(InvalidUserException.class, () -> userService.increaseUserReputation(1));
 	}
 
 }
