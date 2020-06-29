@@ -501,7 +501,7 @@ public class GasStationServiceimpl implements GasStationService {
 		// CR4: overwriting a price report only if new user trust level >= previous user trust level
 		// or if today - report timestamp > 4
 		
-		if( gasStationDto.getReportUser() != null ) {
+		if( gasStationDto.getReportUser() != null && gasStationDto.getReportUser() !=-1 ) {
 			UserDto previousUser = userService.getUserById(gasStationDto.getReportUser());
 			if( userDto.getReputation() < previousUser.getReputation() ) {
 				Date previousTimestamp = null;
