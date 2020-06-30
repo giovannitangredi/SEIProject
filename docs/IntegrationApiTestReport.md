@@ -4,7 +4,7 @@ Authors:Enrico Clemente, Luca Francescato, Giovanni Tangredi, Seyedali Mousavi
 
 Date:26/05/2020
 
-Version: 1
+Version: 2
 
 # Contents
 
@@ -32,6 +32,7 @@ class UserDto{}
 class UserConverter{}
 class LoginDto{}
 class IdPw{}
+class PriceReportDto {}
 class LoginConverter{}
 interface UserRepository{}
 class UserServiceimpl{}
@@ -59,6 +60,7 @@ GasStationServiceimpl-->GasStationRepository
 GasStationServiceimpl-->GasStationConverter
 GasStationServiceimpl-->UserServiceimpl
 UserController-->UserServiceimpl
+UserController-->PriceReportDto
 GasStationController-->GasStationServiceimpl
 frontend-->backend
 @enduml
@@ -248,17 +250,17 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 ## Scenario UC7.1
 
-| Scenario |  Setting a price report with positive prices |
+| Scenario |  Setting a price report with positive prices|
 | ------------- |:-------------:| 
-|  Precondition     | Gas Station G exist ,Account U exists|
-|  Post condition     |   Gas Station G has its price report P overwritten,P.timetag updated, userId of U is attached to G  |
+|  Precondition     | Gas Station G exist ,Account U exists,G hasn't aprice report attached|
+|  Post condition     |   Gas Station G has its price report P attached,P.timetag is set, userId of U is attached to G  |
 | Step#        | Description  |
 |  1     | U select to add a new report to G|
 |  2     | U give the new prices(no neg) for the possible types of gas|
 |  3	 |	System checks that the given prices  are all >=0|
 |  4	 |	Prices of G are overwritten by the System|
 |  5	 |	userId is setted as the new userId for the report|
-|  6	 |	the TimeStatmp of the price report is updated|
+|  6	 |	the TimeStatmp of the price report is setted|
 
 
 ## Scenario UC7.2
@@ -274,17 +276,46 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  4	 |  System abort the operation|
 |  5	 |	the system throws an error|
 
+## Scenario UC7.3
+
+| Scenario |  Setting a price report U has a better trust level than U2|
+| ------------- |:-------------:| 
+|  Precondition     | Gas Station G exist ,Account U exists,Account U2 exists|
+|  Post condition     |   Gas Station G has its price report P overwritten,P.timetag updated, userId of U is attached to G  |
+| Step#        | Description  |
+|  1     | U select to add a new report to G|
+|  2     | U give the new prices(no neg) for the possible types of gas|
+|  3	 |	System checks that the given prices  are all >=0|
+|  4	 |	System checks if U trust level is better than U2 |
+|  5	 |	Prices of G are overwritten by the System|
+|  6	 |	U.userId is setted as the new userId for the report|
+|  7	 |	the TimeStatmp of the price report is updated|
+
+## Scenario UC7.4
+
+| Scenario |  Setting a price report U has a worse trust level than U2|
+| ------------- |:-------------:| 
+|  Precondition     | Gas Station G exist ,Account U exists,Account U2 exists, U.reputation<U2.reputation, today- Timestamp < 4 days|
+|  Post condition     |   no changes  |
+| Step#        | Description  |
+|  1     | U select to add a new report to G|
+|  2     | U give the new prices(no neg) for the possible types of gas|
+|  3	 |	System checks that the given prices  are all >=0|
+|  4	 |	System checks if U trust level is better than U2 |
+|  5	 |	System checks today- Timestamp > 4 days|
+|  6 	 |	The report is refused , no changes are made |
+
 
 ## Scenario UC8.1
 
 | Scenario |  Get a Gas Stations with coordinates |
 | ------------- |:-------------:| 
-|  Precondition     | GeoPoint of the User/Visitator can be obtained|
-|  Post condition     |   the List of Gas Stations within 1 km from the Geo point given by User/Visitor is retrieved, Filters are applied if any were chosen , in case of void result a empty list is returned  |
+|  Precondition     | GeoPoint of the User/Visitator can be obtained,radius R is given|
+|  Post condition     |   the List of Gas Stations within R km from the Geo point given by User/Visitor is retrieved, Filters are applied if any were chosen , in case of void result a empty list is returned  |
 | Step#        | Description  |
 |  1     | U  use is own location|
 |  2     | System check that GeoPoint is not out of boundary|
-|  2     | All Gas stations within 1 km are retrieved|
+|  2     | All Gas stations within the given radius are retrieved|
 |  3	 |	Trust level of reports are recalculated |
 |  4	 | Filter Gas Station by fuel type|
 |  5	 | Filter Gas Station by car sharing|
@@ -293,12 +324,12 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 | Scenario |  Get a Gas Stations without coordinates |
 | ------------- |:-------------:| 
-|  Precondition     | Address inserted was valid|
-|  Post condition     |   the List of Gas Stations within 1 km from the Geo point of the User/Visitor is retrieved, Filters are applied if any were chosen , in case of void result a empty list is returned  |
+|  Precondition     | Address inserted was valid,,radius R is given|
+|  Post condition     |   the List of Gas Stations within R km from the Geo point of the User/Visitor is retrieved, Filters are applied if any were chosen , in case of void result a empty list is returned  |
 | Step#        | Description  |
 |  1     | U  select an address|
 |  2     | System check that GeoPoint is not out of boundary|
-|  2     | All Gas stations within 1 km are retrieved|
+|  2     | All Gas stations within R km are retrieved|
 |  3	 |	Trust level of reports are recalculated|
 |  4	 |  Filter Gas Station by fuel type|
 |  5	 |	Filter Gas Station by car sharing|
@@ -329,7 +360,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 |  3    |  System searches the user U2 who did signal the prices for G|
 |  4    |  System increases by 1 the trust level of U2 |
 
-##Scenario 10.2 
+## Scenario 10.2 
 | Scenario |  Evaluating a wrong price report |
 | ------------- |:-------------:| 
 |  Precondition     | User U exists and has valid account |
@@ -363,6 +394,8 @@ Class UserServiceimplRealTests has the following tests: testSaveUser, testDelete
 |  UC6.1        | FR3.2                           | deleteGasStationTest       |    
 |  UC7.1        | FR5.1                           | setReportTest        |  
 |  UC7.2        | FR5.1                           | setReportTest            |  
+|  UC7.3        | FR5.1                           | setReportTest            |  
+|  UC7.4        | FR5.1                           | setReportTest            |  
 |  UC8.1        | FR4,FR3.3                       | getGasStationsWithCoordinatesTest,getGasStationsByProximityTest,getGasStationByCarSharingTest,getGasStationsByGasolineTypeTest,getAllGasStationsTest |  
 |  UC8.2        | FR4                             | getGasStationsWithoutCoordinatesTest,getGasStationsByProximityTest,getGasStationByCarSharingTest,getGasStationsByGasolineTypeTest,getAllGasStationsTest |
 |  UC9.1        | FR5.2                           |   getAllGasStationsTest          |
