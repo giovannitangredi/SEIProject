@@ -63,7 +63,7 @@ public class TestController {
 			UserDto user = mapper.readValue(jsonString, UserDto.class);
 			assertTrue(user != null && user.getUserId() == 161);
 		} else {
-			jsonString.equals("");
+			assertTrue(jsonString.equals(""));
 		}
 	}
 
@@ -145,7 +145,7 @@ public class TestController {
 	@Test
 	public void getGasStationsByProximityTest() throws ClientProtocolException, IOException {
 		HttpUriRequest request = new HttpGet(
-				"http://localhost:8080/gasstation/searchGasStationByProximity/45.03789692999072/7.643556857764101/");
+				"http://localhost:8080/gasstation/searchGasStationByProximity/45.03789692999072/7.643556857764101/1");
 		HttpResponse response = HttpClientBuilder.create().build().execute(request);
 		String jsonFromResponse = EntityUtils.toString(response.getEntity());
 		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -157,7 +157,7 @@ public class TestController {
 	@Test
 	public void getGasStationsWithCoordinatesTest() throws ClientProtocolException, IOException {
 		HttpUriRequest request = new HttpGet(
-				"http://localhost:8080/gasstation/getGasStationsWithCoordinates/45.03789692999072/7.643556857764101/diesel/Enjoy");
+				"http://localhost:8080/gasstation/getGasStationsWithCoordinates/45.03789692999072/7.643556857764101/1/diesel/Enjoy");
 		HttpResponse response = HttpClientBuilder.create().build().execute(request);
 		String jsonFromResponse = EntityUtils.toString(response.getEntity());
 		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
