@@ -260,6 +260,22 @@ public class GasStationServiceRealTest {
 		// Scenario 7.2
 		assertThrows(PriceException.class, () -> {
 			gsService.setReport(res.getGasStationId(), -1.6, -1.1, -1.2, -1.4, -1.5, -1.7, 1);
+			
+		// Scenario 7.3
+		User user = new User("user1", "pass1", "user1@user.com", 5);
+		user=uRepo.save(user);
+		gsService.setReport(gasStationDto.getGasStationId(), 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, user.getUserId());
+		GasStationDto gs= gsService.getGasStationById(gasStationDto.getGasStationId());
+		assertEquals(gs.getDieselPrice(), 1.5);
+		assertEquals(gs.getSuperPlusPrice(), 1.5);
+		assertEquals(gs.getSuperPrice(), 1.5);
+		//scenario 7.4
+		user.setReputation(-5);
+		user=uRepo.save(user);
+		gsService.setReport(gs.getGasStationId(), 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, user.getUserId());
+		assertNotEquals(gs.getGasPrice(), 1.5);
+		assertNotEquals(gs.getPremiumDieselPrice(), 1.5);
+		assertNotEquals(gs.getMethanePrice(), 1.5);
 		});
 	}
 }
