@@ -2,10 +2,15 @@
 
 Authors:Enrico Clemente, Luca Francescato, Giovanni Tangredi, Seyedali Mousavi
 
-Date:26/05/2020
+Date:30/06/2020
 
 Version: 2
 
+List of changes
+
+| | |
+|--|---|
+| 1| Added Scenarios UC 7.3 and UC7.4, changed scenarios UC8.1 and UC8.2 | 
 # Contents
 
 - [Dependency graph](#dependency graph)
@@ -252,7 +257,7 @@ It was chose a mixed integration approach, the Service classes was tested first 
 
 | Scenario |  Setting a price report with positive prices|
 | ------------- |:-------------:| 
-|  Precondition     | Gas Station G exist ,Account U exists,G hasn't aprice report attached|
+|  Precondition     | Gas Station G exist ,Account U exists,G hasn't a price report attached|
 |  Post condition     |   Gas Station G has its price report P attached,P.timetag is set, userId of U is attached to G  |
 | Step#        | Description  |
 |  1     | U select to add a new report to G|
