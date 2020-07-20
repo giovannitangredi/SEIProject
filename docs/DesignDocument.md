@@ -246,6 +246,7 @@ package it.polito.ezgas.entity #DDDDDD {
         + hasSuperPlus : boolean 
         + hasGas : boolean 
         + hasMethane : boolean 
+        + hasPremiumDiesel : boolean
         + carSharing :  String 
         + lat :  double 
         + lon :  double 
@@ -254,6 +255,7 @@ package it.polito.ezgas.entity #DDDDDD {
         + superPlusPrice :  double 
         + gasPrice :  double 
         + methanePrice :  double 
+        + premiumDieselPrice : double
         + reportUser : Integer 
         + reportTimestamp :  String 
         + reportDependability :  double 
@@ -321,6 +323,7 @@ package it.polito.ezgas.dto #CCDDDD {
         + hasSuperPlus : boolean 
         + hasGas : boolean 
         + hasMethane : boolean 
+        + hasPremiumDiesel : boolean
         + carSharing : String 
         + lat : double 
         + lon : double 
@@ -329,6 +332,7 @@ package it.polito.ezgas.dto #CCDDDD {
         + superPlusPrice : double 
         + gasPrice : double 
         + methanePrice : double 
+        + premiumDiesel : double
         + reportUser : Integer 
         + userDto : UserDto 
         + reportTimestamp : String 
@@ -415,6 +419,7 @@ package it.polito.ezgas.controller #CCDDBB {
         List<GasStationDto> getGasStationsByGasolineType()
         void setGasStationReport()
         void saveGasStation()
+        void deleteGasStation()
     }
     Class HomeController {
         String admin()

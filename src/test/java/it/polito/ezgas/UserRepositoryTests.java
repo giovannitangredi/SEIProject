@@ -4,22 +4,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.polito.ezgas.entity.User;
 import it.polito.ezgas.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@AutoConfigureTestDatabase
+@SpringBootTest
 public class UserRepositoryTests {
 	
 	@Autowired
 	UserRepository userRepository;
-	
+	@Before
+	public void setUp() {
+		userRepository.deleteAll();
+	}
+
 	@Test
 	public void testFindOne() {
 		User user = new User("user1", "password", "user1@user1.com", 0);

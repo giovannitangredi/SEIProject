@@ -2,9 +2,9 @@
 
 Authors: Enrico Clemente, Luca Francescato, Giovanni Tangredi, Seyedali Mousavi
 
-Date: 03/05/2020
+Date: 30/06/2020
 
-Version: 1
+Version: 2
 
 # Contents
 
@@ -27,12 +27,12 @@ Version: 1
 
 |             | Estimate                        |             
 | ----------- | ------------------------------- |  
-| NC =  Estimated number of classes to be developed   |10|             
-|  A = Estimated average size per class, in LOC       |200| 
-| S = Estimated size of project, in LOC (= NC * A) |2000|
-| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)|200|   
-| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 6000| 
-| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) | 2 |               
+| NC =  Estimated number of classes to be developed   |15 |             
+|  A = Estimated average size per class, in LOC       |100| 
+| S = Estimated size of project, in LOC (= NC * A) |1500|
+| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)|150|   
+| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 4500| 
+| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) | 1 |               
 
 
 # Estimate by activity decomposition
@@ -44,19 +44,19 @@ Version: 1
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
 | Requirements | 20 |
-| Design | 50  |
-| Coding | 200 |
-| Unit Testing | 60 |
-| System Testing | 40 |
+| Design | 30  |
+| Coding | 150 |
+| Unit Testing | 20 |
+| System Testing | 50 |
 
 
 ###
 ``` plantuml
 @startuml Gantt
 [Requirements] lasts 1 days
-then [Design] lasts 2 days
-then [Coding] lasts 7 days
-then [Unit Testing] lasts 2 days
+then [Design] lasts 1 days
+then [Coding] lasts 5 days
+then [Unit Testing] lasts 1 days
 then [System Testing] lasts 2 days
 @enduml
 ```

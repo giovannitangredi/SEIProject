@@ -15,6 +15,8 @@ public class GasStationConverter {
 		gasStationConverted.setHasSuperPlus(gasStation.getHasSuperPlus());
 		gasStationConverted.setHasGas(gasStation.getHasMethane());
 		gasStationConverted.setHasMethane(gasStation.getHasMethane());
+		// v2: issue 1 added premium diesel
+		gasStationConverted.setHasPremiumDiesel(gasStation.getHasPremiumDiesel());
 		gasStationConverted.setCarSharing(gasStation.getCarSharing());
 		gasStationConverted.setLat(gasStation.getLat());
 		gasStationConverted.setLon(gasStation.getLon());
@@ -23,6 +25,8 @@ public class GasStationConverter {
 		gasStationConverted.setSuperPlusPrice(gasStation.getSuperPlusPrice());
 		gasStationConverted.setGasPrice(gasStation.getGasPrice());
 		gasStationConverted.setMethanePrice(gasStation.getMethanePrice());
+		// v2: issue 1 added premium diesel
+		gasStationConverted.setPremiumDieselPrice(gasStation.getPremiumDieselPrice());
 		gasStationConverted.setReportUser(gasStation.getReportUser());
 		//handling first time saving gas station without price report
 		if( gasStation.getUser() != null ) {
@@ -45,6 +49,8 @@ public class GasStationConverter {
 		gasStationConverted.setHasSuperPlus(gasStationDto.getHasSuperPlus());
 		gasStationConverted.setHasGas(gasStationDto.getHasGas());
 		gasStationConverted.setHasMethane(gasStationDto.getHasMethane());
+		// v2: issue 1 added premium diesel
+		gasStationConverted.setHasPremiumDiesel(gasStationDto.getHasPremiumDiesel());
 		gasStationConverted.setCarSharing(gasStationDto.getCarSharing());
 		gasStationConverted.setLat(gasStationDto.getLat());
 		gasStationConverted.setLon(gasStationDto.getLon());
@@ -53,6 +59,8 @@ public class GasStationConverter {
 		gasStationConverted.setSuperPlusPrice(gasStationDto.getSuperPlusPrice());
 		gasStationConverted.setGasPrice(gasStationDto.getGasPrice());
 		gasStationConverted.setMethanePrice(gasStationDto.getMethanePrice());
+		// v2: issue 1 added premium diesel
+		gasStationConverted.setPremiumDieselPrice(gasStationDto.getPremiumDieselPrice());
 		gasStationConverted.setReportUser(gasStationDto.getReportUser());
 		//handling first time saving gas station without price report
 		if( gasStationDto.getUserDto() != null ) {

@@ -412,7 +412,7 @@ Version: 2
 
 
 
-### **Class *User* - method *setHasDiesel***
+### **Class *GasStation* - method *setHasDiesel***
 
 **Criteria for method *setHasDiesel*:**
 
@@ -441,7 +441,7 @@ Version: 2
 
 
 
-### **Class *User* - method *setHasSuper***
+### **Class *GasStation* - method *setHasSuper***
 
 **Criteria for method *setHasSuper*:**
 
@@ -470,7 +470,7 @@ Version: 2
 
 
 
-### **Class *User* - method *setHasSuperPlus***
+### **Class *GasStation* - method *setHasSuperPlus***
 
 **Criteria for method *setHasSuperPlus*:**
 
@@ -499,7 +499,7 @@ Version: 2
 
 
 
-### **Class *User* - method *setHasGas***
+### **Class *GasStation* - method *setHasGas***
 
 **Criteria for method *setHasGas*:**
 
@@ -528,7 +528,7 @@ Version: 2
 
 
 
-### **Class *User* - method *setHasMethane***
+### **Class *GasStation* - method *setHasMethane***
 
 **Criteria for method *setHasMethane*:**
 
@@ -554,6 +554,33 @@ Version: 2
 | ------------- | --------------- | ---------------------------- | ----------------- |
 | null          | Valid           | T1(null) -> null             | it.polito.ezgas.GasStationTests.testSetHasMethane |
 | {true, false} | Valid           | T2(false) -> false           | it.polito.ezgas.GasStationTests.testSetHasMethane |
+
+### **Class *GasStation* - method *setHasPremiumDiesel***
+
+**Criteria for method *setHasPremiumDiesel*:**
+
+ - value of hasPremiumDiesel
+
+**Predicates for method *setHasPremiumDiesel*:**
+
+| Criteria            | Predicate              |
+| ------------------- | ---------------------- |
+| value of hasPremiumDiesel | null                   |
+|                     | {true, false}          |
+
+**Boundaries**:
+
+| Criteria            | Boundary values |
+| ------------------- | --------------- |
+| value of hasPremiumDiesel | true            |
+|                     | false           |
+
+**Combination of predicates**:
+
+| Criteria 1    | Valid / Invalid | Description of the test case | JUnit test case   |
+| ------------- | --------------- | ---------------------------- | ----------------- |
+| null          | Valid           | T1(null) -> null             | it.polito.ezgas.GasStationTests.testSetHasPremiumDiesel |
+| {true, false} | Valid           | T2(false) -> false           | it.polito.ezgas.GasStationTests.testSetHasPremiumDiesel |
 
 
 
@@ -785,6 +812,37 @@ Version: 2
 | mindouble - 1          | Invalid         | T2(mindouble - 1) -> Error   | it.polito.ezgas.GasStationTests.testSetMethanePrice |
 | maxdouble + 1          | Invalid         | T3(maxdouble + 1) -> Error   | it.polito.ezgas.GasStationTests.testSetMethanePrice |
 
+### **Class *GasStation* - method *setPremiumDieselPrice***
+
+**Criteria for method *setPremiumDieselPrice*:**
+
+ - value of PremiumDieselPrice
+
+**Predicates for method *setPremiumDieselPrice*:**
+
+| Criteria              | Predicate              |
+| --------------------- | ---------------------- |
+| value of PremiumDieselPrice | [mindouble, maxdouble] |
+
+**Boundaries**:
+
+| Criteria              | Boundary values |
+| --------------------- | --------------- |
+| value of PremiumDieselPrice | mindouble - 1   |
+|                       | mindouble       |
+|                       | mindouble + 1   |
+|                       | maxdouble - 1   |
+|                       | maxdouble       |
+|                       | maxdouble + 1   |
+
+**Combination of predicates**:
+
+| Criteria 1             | Valid / Invalid | Description of the test case | JUnit test case     |
+| ---------------------- | --------------- | ---------------------------- | ------------------- |
+| [mindouble, maxdouble] | Valid           | T1(0.69) -> 0.69             | it.polito.ezgas.GasStationTests.testSetPremiumDieselPrice |
+| mindouble - 1          | Invalid         | T2(mindouble - 1) -> Error   | it.polito.ezgas.GasStationTests.SetPremiumDieselPrice |
+| maxdouble + 1          | Invalid         | T3(maxdouble + 1) -> Error   | it.polito.ezgas.GasStationTests.SetPremiumDieselPrice |
+
 
 
 ### **Class *GasStation* - method *setUser***
@@ -888,6 +946,7 @@ Version: 2
 | setHasGas              | testSetHasGas              |
 | getHasMethane          | testGetHasMethane          |
 | setHasMethane          | testSetHasMethane          |
+| setHasPremiumDiesel          | testSetHasPremiumDiesel          |
 | getLat                 | testGetLat                 |
 | setLat                 | testSetLat                 |
 | getLon                 | testGetLon                 |

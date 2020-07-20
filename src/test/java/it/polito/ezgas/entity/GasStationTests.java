@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import it.polito.ezgas.entity.GasStation;
-import it.polito.ezgas.entity.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -183,6 +181,23 @@ public class GasStationTests {
 	    instance.setHasGas(value);
 	    assertEquals(instance.getHasGas(), value);
 	}
+	
+	@Test
+	public void testGetHasPremiumDiesel() {
+		GasStation instance = new GasStation();
+	    boolean expResult = true;
+	    instance.setHasPremiumDiesel(true);
+	    boolean result = instance.getHasPremiumDiesel();
+	    assertEquals(expResult, result);
+	}
+
+	@Test
+	public void testSetHasPremiumDiesel() {
+		boolean value = true;
+	    GasStation instance = new GasStation();
+	    instance.setHasPremiumDiesel(value);
+	    assertEquals(instance.getHasPremiumDiesel(), value);
+	}
 
 	@Test
 	public void testGetLat() {
@@ -192,6 +207,7 @@ public class GasStationTests {
 	    double result = instance.getLat();
 	    assertEquals(expResult, result);
 	}
+	
 
 	@Test
 	public void testSetLat() {
@@ -357,9 +373,9 @@ public class GasStationTests {
     public void testConstructor() {
 	    GasStation instance = new GasStation("test", "testAddress", 
 	    		true, true, true, true, 
-	    		true, "testCar", 30.0, 20.0, 1.6, 
+	    		true, true, "testCar", 30.0, 20.0, 1.6, 
 	    		1.6, 2.24, 3.14, 1.45, 
-	    		22, "testTime", 0.0);
+	    		2.05, 22, "testTime", 0.0);
 	    assertEquals(instance.getCarSharing(), "testCar");
 	    assertEquals(instance.getUser(),null);
 	    assertEquals(instance.getLat(),30.0);
@@ -380,6 +396,7 @@ public class GasStationTests {
 	    assertEquals(instance.getSuperPlusPrice(),2.24);
 	    assertEquals(instance.getGasPrice(),3.14);
 	    assertEquals(instance.getMethanePrice(),1.45);
+	    assertEquals(instance.getPremiumDieselPrice(),2.05);
     }
 
 }

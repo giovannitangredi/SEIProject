@@ -4,27 +4,34 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.repository.GasStationRepository;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@AutoConfigureTestDatabase
+@SpringBootTest
 public class GasStationRepositoryTests {
 
 	@Autowired
 	GasStationRepository gasStationRepository;
-	
+	@Before
+	public void setUp() {
+		gasStationRepository.deleteAll();
+	}
 	@Test
 	public void testFindOne() {
 		GasStation gasStation = new GasStation("GS1", "Via dei pazzi, 0", true, true,
-												true, true, true, "Enjoy", 45, 45, 1.0, 
-												1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
+												true, true, true, true, "Enjoy", 45, 45, 1.0, 
+												1.0, 1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
 		
 		gasStationRepository.save(gasStation);
 		assertNotNull(gasStationRepository.findOne(gasStation.getGasStationId()));
@@ -33,11 +40,11 @@ public class GasStationRepositoryTests {
 	@Test
 	public void testFindAll() {
 		GasStation gasStation1 = new GasStation("GS1", "Via dei pazzi, 0", true, true,
-												true, true, true, "Enjoy", 45, 45, 1.0, 
-												1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
+												true, true, true, true, "Enjoy", 45, 45, 1.0, 
+												1.0, 1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
 		GasStation gasStation2 = new GasStation("GS2", "Via dei pazzi, 0", true, true,
-												true, true, true, "Enjoy", 45, 45, 1.0, 
-												1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
+												true, true, true, true, "Enjoy", 45, 45, 1.0, 
+												1.0, 1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
 		
 		gasStationRepository.save(gasStation1);
 		gasStationRepository.save(gasStation2);
@@ -50,8 +57,8 @@ public class GasStationRepositoryTests {
 	@Test
 	public void testExists() {
 		GasStation gasStation = new GasStation("GS1", "Via dei pazzi, 0", true, true,
-												true, true, true, "Enjoy", 45, 45, 1.0, 
-												1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
+												true, true, true, true, "Enjoy", 45, 45, 1.0, 
+												1.0, 1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
 		gasStationRepository.save(gasStation);
 		assertTrue(gasStationRepository.exists(gasStation.getGasStationId()));
 	}
@@ -59,8 +66,8 @@ public class GasStationRepositoryTests {
 	@Test
 	public void testSave() {
 		GasStation gasStation = new GasStation("GS1", "Via dei pazzi, 0", true, true,
-												true, true, true, "Enjoy", 45, 45, 1.0, 
-												1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
+												true, true, true, true, "Enjoy", 45, 45, 1.0, 
+												1.0, 1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
 		gasStationRepository.save(gasStation);
 		GasStation result = gasStationRepository.findOne(gasStation.getGasStationId());
 		assertEquals(gasStation.getGasStationName(), result.getGasStationName());
@@ -86,8 +93,8 @@ public class GasStationRepositoryTests {
 	@Test
 	public void testDelete() {
 		GasStation gasStation = new GasStation("GS1", "Via dei pazzi, 0", true, true,
-												true, true, true, "Enjoy", 45, 45, 1.0, 
-												1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
+												true, true, true, true, "Enjoy", 45, 45, 1.0, 
+												1.0, 1.0, 1.0, 1.0, 1.0, 1, "23/05/2020", 1.0);
 		gasStationRepository.save(gasStation);
 		gasStationRepository.delete(gasStation.getGasStationId());
 		assertNull(gasStationRepository.findOne(gasStation.getGasStationId()));
