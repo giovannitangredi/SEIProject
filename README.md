@@ -1,6 +1,6 @@
 # EZGas
 
-SE 2020 project
+SE 2020 project TEST
 
 EZGas is a crowdsourcing service that allows users to:
 * collect prices of fuels in different gas stations
